@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <h1>{{ msg }}</h1>
-    <HelloWorld v-bind:msg1="msg1" />
+    <HelloWorld v-bind:msg="msg" />
   </div>
 </template>
 
@@ -16,8 +15,7 @@ export default defineComponent({
   },
   data() {
     return {
-      msg: " test message !!!",
-      msg1: " test message 2 !!!"
+      msg: "Hello World ",
     }
   }
 
