@@ -1,0 +1,148 @@
+
+body {
+  overflow: hidden;
+}
+
+/* my style*/
+
+.main {
+  height: 100vh;
+}
+
+.headline {
+  height: 10%;
+  min-width: 98%;
+  background-color: #095473;
+  ;
+  text-align: center;
+  color: #fff;
+  border: ridge;
+}
+
+.bottom-bar {
+  height: 5%;
+  background-color: #095473;
+  ;
+  text-align: center;
+  border: ridge;
+
+}
+
+.board {
+  height: 80%;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  /* Enable horizontal scrollbar for overflowing content */
+  background-color: #fff;
+  max-width: 100%;
+}
+
+.list {
+  margin: 10px;
+  padding: 10px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  width: 250px;
+  border-color: rgb(176, 174, 177);
+  height: min-content;
+  box-sizing: border-box;
+  background-color: #B9D6BC;
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-box {
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow-y: auto;
+
+}
+
+
+.card-title {
+  font-size: 100%;
+  font-family: Arial, sans-serif;
+  text-align: left;
+  color: #095473;
+  cursor: pointer;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.card-text {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: smaller;
+  overflow-wrap: break-word;
+  color: cadetblue;
+  cursor: pointer;
+}
+
+.card {
+  flex-wrap: nowrap;
+  margin: 2px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  min-width: 90%;
+  border-color: rgb(105, 103, 107);
+  height: min-content;
+  box-sizing: border-box;
+  display: grid;
+  border-radius: 3px;
+  grid-gap: 5px;
+  background-color: #F2D2A2;
+}
+
+.add-card {
+  margin: 5px 0;
+  padding: 5px;
+  background-color: rgb(123, 122, 107);
+  border-radius: 3px;
+  display: grid;
+  text-align: center;
+}
+
+.add-list {
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 3px;
+  height: min-content;
+  display: grid;
+}
+
+.button-list {
+  width: 30px;
+  height: 30px;
+  margin-left: 45%;
+  border-radius: 50%;
+  background-color: #5B95AA;
+  color: #fff;
+  left: 50%;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+.add-event-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background-color: #5B95AA;
+  border-radius: 10%;
+  cursor: pointer;
+  margin: 1%;
+  width: 100%;
+}
+
+.delete-button {
+  float: right;
+  background-color: #349B90;
+  border-radius: 20%;
+  margin: 1%;
+  cursor: pointer;
+  color: #fff;
+  margin-bottom: auto;
+}

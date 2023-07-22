@@ -1,23 +1,21 @@
-<template>
-  <div id="app">
-    <h1>{{ msg }}</h1>
-    <HelloWorld v-bind:msg1="msg1" />
+<template >
+  <div id="app" >
+        <Board />
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
 
+import Board from './components/Board.vue'
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld,
+   Board,
   },
   data() {
     return {
-      msg: " test message !!!",
-      msg1: " test message 2 !!!"
+      
     }
   }
 
@@ -25,13 +23,6 @@ export default defineComponent({
 )
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style src="./assets/trello.css">
+
 </style>
