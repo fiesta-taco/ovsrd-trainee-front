@@ -1,6 +1,7 @@
+
 <template >
-  <div id="app" >
-        <Board />
+  <div id="app">
+    <Board />
   </div>
 </template>
 
@@ -11,18 +12,10 @@ import Board from './components/Board.vue'
 export default defineComponent({
   name: 'App',
   components: {
-   Board,
+    Board,
   },
-  data() {
-    return {
-      
-    }
-  }
-
 }
 )
 </script>
 
-<style src="./assets/trello.css">
-
-</style>
+<style src="./assets/trello.css"></style>
