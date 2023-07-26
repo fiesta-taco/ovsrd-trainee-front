@@ -6,17 +6,17 @@
         </div>
 
         <div class="board">
-            <List v-for="list in lists" :key="list.id" :list="list" @addCard="addCardToList"
-                @update-list-title="updateListTitle" @update-card-text="saveCardText" @update-card-title="saveCardTitle"
-                @delete-card="deleteCard" @delete-list="deleteList" />
-            <div class="list">
-                <div class="add-list">
-                    <input v-model="newListTitle" type="text" placeholder="Add new List Name" style="text-align: center;" />
-                    <button @click="addNewList" class="button-list">+</button>
-                </div>
-            </div>
-        </div>
 
+            <List v-for="list in lists" :key="list.id" :list="list" @add-card="addCardToList"
+                @update-list-title="updateListTitle" @delete-card="deleteCard" @delete-list="deleteList"
+                @open-modal-card="openModalCard" />
+            <div class="add-list" @click="addNewList">
+                + add list
+            </div>
+
+        </div>
+        <CardModal v-if="isModalOpen" :card="modalCard" :listId="modalListId" @close-modal="closeModal"
+            @delete-card="deleteCard" @save-card="saveCard" />
         <div class="bottom-bar">
             <p> Produced by Ihor Bilash </p>
         </div>
@@ -25,13 +25,20 @@
 
 <script>
 import List from './List.vue'
+import CardModal from './CardModal.vue';
+
+
 export default {
     name: "Board-v",
     components: {
         List,
+        CardModal,
     },
     data() {
         return {
+            isModalOpen: false,
+            modalCard: null,
+            modalListId: "",
             editing: false,
             newListTitle: "",
             lists: [
@@ -45,22 +52,25 @@ export default {
             ]
         }
     },
+
+
     methods: {
+
         addCardToList(listId, cardTitle) {
             const list = this.lists.find(list => list.id === listId);
             if (list) {
-                list.cards.push({ id: Date.now(), title: cardTitle });
+                list.cards.push({ id: Date.now(), title: cardTitle, text: "" });
             }
+          //  console.log("after add card to list===>>>", this.lists)
         },
         addNewList() {
             const newList = {
                 id: this.lists.length + 1,
-                title: this.newListTitle === "" ? "New List" : this.newListTitle,
+                title: "New List",
                 cards: []
             }
             this.lists.push(newList);
             this.newListTitle = "";
-
         },
         updateListTitle(listId, newTitle) {
             const updatedList = this.lists.find((list) => list.id === listId)
@@ -68,19 +78,25 @@ export default {
                 updatedList.title = newTitle;
             }
         },
-        saveCardText(listId, cardId, newText) {
+        openModalCard(listId, cardId) {
             const updatedlist = this.lists.find(list => list.id === listId)
             const updatedCard = updatedlist.cards.find(card => card.id === cardId);
-            if (updatedCard) {
-                updatedCard.text = newText;
-            }
+            this.modalCard = updatedCard;
+            this.modalListId = listId;
+            this.isModalOpen = true;
         },
-        saveCardTitle(listId, cardId, newTitle) {
+        closeModal() {
+            this.isModalOpen = false;
+        },
+        saveCard(listId, newCard) {
             const updatedlist = this.lists.find(list => list.id === listId)
-            const updatedCard = updatedlist.cards.find(card => card.id === cardId);
+            const updatedCard = updatedlist.cards.find(card => card.id === newCard.id);
             if (updatedCard) {
-                updatedCard.title = newTitle;
+                updatedCard.title = newCard.title;
+                updatedCard.text = newCard.text;
             }
+            this.isModalOpen = false;
+         //   console.log("save after modal card===>>>", this.lists)
         },
         deleteCard(listId, cardId) {
             const updatedList = this.lists.find(list => list.id === listId);
@@ -89,13 +105,13 @@ export default {
                 const renamedIdCards = this.updateCardIds(cards)
                 updatedList.cards = renamedIdCards;
             }
-            console.log("after delete card===>>>",this.lists)
-
+            this.isModalOpen = false;
+          //  console.log("after delete card===>>>", this.lists)
         },
         deleteList(listId) {
             this.lists = this.lists.filter(list => list.id !== listId);
             this.updateListIds();
-            console.log(" === out list====>>>", this.lists)
+          //  console.log(" === out list====>>>", this.lists)
         },
         updateListIds() {
             this.lists.forEach((list, index) => {
@@ -109,7 +125,6 @@ export default {
             });
         }
     },
-
 }
 
 </script>

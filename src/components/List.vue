@@ -1,45 +1,104 @@
 <template>
+    <!-- <div class="swiper-container">
+        <div class="swiper-wrapper">-->
     <div class="list">
-        <div style="display: flex; justify-content: space-between;">
+        <div class="title-block">
             <div>
-                <h3 v-if="!editing" @click="editing = true" style="color: #095473; cursor: pointer;">{{ list.title }}</h3>
+                <div class="list-title" v-if="!editing" @click="editing = true">
+                    {{ list.title }}</div>
                 <input v-else v-model="newListTitle" @keyup.enter="saveListTitle" @blur="saveListTitle" />
             </div>
-            <div class="delete-button" @click="deleteList">delete</div>
+            <div class="delete-button" @click="deleteList"></div>
         </div>
         <div class="card-box">
-            <Card v-for="card in list.cards" :key="card.id" :card="card" @update-card-text="saveCardText"
-                @update-card-title="saveCardTitle" @delete-card="deleteCard" />
+            <Card v-for="card in list.cards" :key="card.id" :card="card"
+               @open-modal-card="openModalCard" @delete-card="deleteCard"  />
         </div>
-        <div class="add-card">
-            <input v-model="newCardTitle" placeholder="Add new Card Title" style="text-align: center;" />
-            <b-button pill variant="danger" @click="addCard">+</b-button>
+        <div v-if="!addCardIsActive" class="add-card" @click="activateAddSpace">
+            <!-- -->
+            <div class="addcard-text">+</div>
+            <div class="addcard-text">Add Card</div>
         </div>
-
+        <div v-else class="card">
+            <div style="display: flex; justify-content: space-between;">
+                <input class="input-card" v-model="newCardTitle" placeholder="add title"
+                 @blur="addCardIsActive = false" @keyup.enter="addCard" />
+                <b-button class="input-btn" @click="addCard">+</b-button>
+            </div>
+        </div>
     </div>
+    <!-- </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>-->
 </template>
 
 <script>
 import Card from "./Card.vue";
+import Swiper from "swiper";
+import { Navigation } from 'swiper/modules';
+
 export default {
     name: "List-v",
     components: {
         Card,
     },
+
     props: ["list"],
     data() {
         return {
+            addCardIsActive: false,
+            swiper: null,
             editing: false,
             newCardTitle: "",
             newListTitle: this.list.title
         };
     },
+
+    mounted() {
+        if (window.innerWidth <= 767) {
+            this.initSwiper();
+        }
+        window.addEventListener("resize", this.handleResize);
+    },
+    beforeDestroy() {
+        window.removeEventListener("resize", this.handleResize);
+        if (this.swiper) {
+            this.swiper = null;
+        }
+    },
+
     methods: {
+        initSwiper() {
+            const swiperOptions = {
+                modules: [Navigation],
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+            };
+            this.swiper = new Swiper(".swiper-container", swiperOptions);
+        },
+        handleResize() {
+            if (window.innerWidth <= 767 && !this.swiper) {
+                this.initSwiper();
+            } else if (window.innerWidth > 767 && this.swiper) {
+                this.swiper = null;
+            }
+        },
+        activateAddSpace() {
+            this.addCardIsActive = true;
+        },
         addCard() {
             if (this.newCardTitle.trim() !== "") {
-                this.$emit("addCard", this.list.id, this.newCardTitle.trim());
+                this.addCardIsActive = false;
+                this.$emit("add-card", this.list.id, this.newCardTitle.trim());
                 this.newCardTitle = "";
             }
+
+        },
+        openModalCard(cardId) {
+            this.$emit('open-modal-card', this.list.id, cardId)
         },
         deleteCard(cardId) {
             this.$emit('delete-card', this.list.id, cardId)
@@ -53,14 +112,7 @@ export default {
                 this.$emit('update-list-title', this.list.id, this.newListTitle)
             }
         },
-        saveCardText(cardId, newCardText) {
-            this.$emit('update-card-text', this.list.id, cardId, newCardText)
-        },
-        saveCardTitle(cardId, newCardTitle) {
-            this.$emit('update-card-title', this.list.id, cardId, newCardTitle)
-        }
     }
-
 }
 
 </script>
