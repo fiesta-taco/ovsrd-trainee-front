@@ -1,25 +1,50 @@
 <template>
     <div class="modal">
         <div class="modal-content">
-            <img src="" alt="">
+            <img
+                src=""
+                alt=""
+            >
             <div class="modal-title-block">
-                <div class="card-modal-title" :contenteditable=this.isEditText @input="updateModalTitle">
-                    {{ this.modalTitle }}</div>
-                <div class="close-modal" @click="closeModal"></div>
-            </div>
-            <div class="main-text-tools">
-                <div class="main-text">
-                    <textarea class="input-in-module" v-if="isEditText" v-model="modalText"
-                        @input="updateModalText"></textarea>
-                    <p v-else>{{ modalText }}</p>
+                <div
+                    class="card-modal-title"
+                    :contenteditable="isEditText"
+                    @input="updateModalTitle"
+                >
+                    {{ modalTitle }}
                 </div>
-                <div class="tools">
-                    <div class="edit-text-btn" @click="openTextEdit"></div>
-                    <div class="remove-card-btn" @click="deleteModalCard"></div>
-                    <div class="save-card-btn" @click="saveCard"></div>
+                <div
+                    class="close-modal"
+                    @click="closeModal"
+                />
+                <div class="main-text-tools">
+                    <div class="main-text">
+                        <textarea
+                            v-if="isEditText"
+                            v-model="modalText"
+                            class="input-in-module"
+                            @input="updateModalText"
+                        />
+                        <p v-else>
+                            {{ modalText }}
+                        </p>
+                    </div>
+                    <div class="tools">
+                        <div
+                            class="edit-text-btn"
+                            @click="openTextEdit"
+                        />
+                        <div
+                            class="remove-card-btn"
+                            @click="deleteModalCard"
+                        />
+                        <div
+                            class="save-card-btn"
+                            @click="saveCard"
+                        />
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
@@ -34,7 +59,7 @@ export default {
             modalTitle: this.card.title,
             modalText: this.card.text,
 
-        }
+        };
     },
     methods: {
         closeModal() {
@@ -48,16 +73,16 @@ export default {
             }
         },
         deleteModalCard() {
-            this.$emit('delete-card', this.listId, this.card.id)
+            this.$emit('delete-card', this.listId, this.card.id);
         },
         saveCard() {
-          //  console.log("before save ==>",this.modalTitle," == ", this.modalText)
-            if (this.modalTitle.trim() !== "" && this.modalText.trim() !== "") {
+            //  console.log("before save ==>",this.modalTitle," == ", this.modalText)
+            if (this.modalTitle.trim() !== '' && this.modalText.trim() !== '') {
                 const newCard = {
                     id: this.card.id,
                     title: this.modalTitle,
-                    text: this.modalText
-                }
+                    text: this.modalText,
+                };
                 this.$emit('save-card', this.listId, newCard);
             }
         },
@@ -65,7 +90,7 @@ export default {
             this.modalTitle = event.target.innerText;
         },
         updateModalText() {
-          console.log(" -update modal text---> ", this.modalText )
+            console.log(' -update modal text---> ', this.modalText );
         },
 
     },
