@@ -1,74 +1,67 @@
 <template>
-    <!-- <div class="swiper-container">
-        <div class="swiper-wrapper">-->
     <div class="list">
         <div class="title-block">
             <div>
-                <div
-                    v-if="!editing"
-                    class="list-title"
+                <div 
+                    v-if="!editing" 
+                    class="list-title" 
                     @click="editing = true"
                 >
                     {{ list.title }}
                 </div>
-                <input
-                    v-else
-                    v-model="newListTitle"
-                    @keyup.enter="saveListTitle"
+                <input 
+                    v-else 
+                    v-model="newListTitle" 
+                    @keyup.enter="saveListTitle" 
                     @blur="saveListTitle"
                 >
             </div>
-            <div
-                class="delete-button"
+            <div 
+                class="delete-button" 
                 @click="deleteList"
-            >
-                <div class="card-box">
-                    <Card
-                        v-for="card in list.cards"
-                        :key="card.id"
-                        :card="card"
-                        @open-modal-card="openModalCard"
-                        @delete-card="deleteCard"
-                    />
-                </div>
-                <div
-                    v-if="!addCardIsActive"
-                    class="add-card"
-                    @click="activateAddSpace"
-                >
-                    <!-- -->
-                    <div class="addcard-text">
-                        +
-                    </div>
-                    <div class="addcard-text">
-                        Add Card
-                    </div>
-                </div>
-                <div
-                    v-else
-                    class="card"
-                >
-                    <div style="display: flex; justify-content: space-between;">
-                        <input
-                            v-model="newCardTitle"
-                            class="input-card"
-                            placeholder="add title"
-                            @blur="addCardIsActive = false"
-                            @keyup.enter="addCard"
-                        >
-                        <b-button
-                            class="input-btn"
-                            @click="addCard"
-                        >
-                            +
-                        </b-button>
-                    </div>
-                </div>
+            /> 
+        </div>
+        <div class="card-box">
+            <Card 
+                v-for="card in list.cards" 
+                :key="card.id" 
+                :card="card" 
+                @open-modal-card="openModalCard"
+                @delete-card="deleteCard" 
+            />
+        </div>
+        <div 
+            v-if="!addCardIsActive" 
+            class="add-card"
+            @click="activateAddSpace"
+        >
+            <!-- -->
+            <div class="addcard-text">
+                +
             </div>
-        <!-- </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </div>-->
+            <div class="addcard-text">
+                Add Card
+            </div>
+        </div>
+        <div 
+            v-else 
+            class="card"
+        >
+            <div style="display: flex; justify-content: space-between;">
+                <input 
+                    v-model="newCardTitle" 
+                    class="input-card" 
+                    placeholder="add title" 
+                    @blur="addCardIsActive = false"
+                    @keyup.enter="addCard"
+                >
+                <b-button 
+                    class="input-btn" 
+                    @click="addCard"
+                >
+                    +
+                </b-button>
+            </div>
         </div>
     </div>
 </template>
@@ -84,7 +77,13 @@ export default {
         Card,
     },
 
-    props: ['list'],
+    props: {
+        list: {
+            type: Object,
+            required: true,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             addCardIsActive: false,
