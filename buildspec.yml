@@ -7,6 +7,8 @@ phases:
     commands:
       - npm install
       - pip install --upgrade awscli
+      #- curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -
+      #- sudo apt-get install -y nodejs
   build:
     commands:
       - npm run build
