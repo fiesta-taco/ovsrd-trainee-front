@@ -13,8 +13,9 @@ phases:
     commands:
       - npm run build
       - aws s3 rm s3://$S3_NAME --recursive 
-      - aws s3 sync ./dist s3://$S3_NAME --cache-control max-age=259200 #caching will be relevant for 3 days
-      
+      - aws s3 sync ./dist s3://$S3_NAME --cache-control max-age=259200 #caching will be relevant for 3 days  
+      - aws cloudfront create-invalidation --distribution-id $CL_FRONT_DIST_ID --paths '/*' # AWS_MAX_ATTEMPTS=10 
+
 
 
 
