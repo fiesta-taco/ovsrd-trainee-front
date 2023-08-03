@@ -12,14 +12,14 @@
             </div>
             <div
                 class="delete-button"
-                @click="deleteCard"
+                @click.stop="deleteCard"
             />
         </div>
 
         <div
             v-if="card.text!==''"
             class="is-content"
-        />
+        /> 
     </div>
 </template>
   
@@ -27,7 +27,13 @@
 
 export default {
     name: 'CardV',
-    props: ['card'],
+    props: {
+        card:{
+            type:Object,
+            required:true,
+            default:()=>({}),
+        },
+    },
     methods: {
         openModalCard() {
             this.$emit('open-modal-card', this.card.id);

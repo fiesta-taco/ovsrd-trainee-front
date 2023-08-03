@@ -1,48 +1,48 @@
 <template>
     <div class="modal">
         <div class="modal-content">
-            <img
-                src=""
+            <img 
+                src="" 
                 alt=""
             >
             <div class="modal-title-block">
-                <div
-                    class="card-modal-title"
-                    :contenteditable="isEditText"
+                <div 
+                    class="card-modal-title" 
+                    :contenteditable="isEditText" 
                     @input="updateModalTitle"
                 >
                     {{ modalTitle }}
                 </div>
-                <div
+                <div 
                     class="close-modal"
                     @click="closeModal"
                 />
-                <div class="main-text-tools">
-                    <div class="main-text">
-                        <textarea
-                            v-if="isEditText"
-                            v-model="modalText"
-                            class="input-in-module"
-                            @input="updateModalText"
-                        />
-                        <p v-else>
-                            {{ modalText }}
-                        </p>
-                    </div>
-                    <div class="tools">
-                        <div
-                            class="edit-text-btn"
-                            @click="openTextEdit"
-                        />
-                        <div
-                            class="remove-card-btn"
-                            @click="deleteModalCard"
-                        />
-                        <div
-                            class="save-card-btn"
-                            @click="saveCard"
-                        />
-                    </div>
+            </div>
+            <div class="main-text-tools">
+                <div class="main-text">
+                    <textarea 
+                        v-if="isEditText" 
+                        v-model="modalText" 
+                        class="input-in-module" 
+                        @input="updateModalText"
+                    />
+                    <p v-else>
+                        {{ modalText }}
+                    </p>
+                </div>
+                <div class="tools">
+                    <div 
+                        class="edit-text-btn"
+                        @click="openTextEdit" 
+                    />
+                    <div 
+                        class="remove-card-btn" 
+                        @click="deleteModalCard" 
+                    />
+                    <div 
+                        class="save-card-btn" 
+                        @click="saveCard" 
+                    />
                 </div>
             </div>
         </div>
@@ -52,7 +52,18 @@
 <script>
 export default {
 
-    props: ['card', 'listId'],
+    props: {
+        card: {
+            type: Object,
+            required: true,
+            default: () => ({}),
+        },
+        listId: {
+            type: Number,
+            required: true,
+            default: () => (null),
+        },
+    },
     data() {
         return {
             isEditText: false,
@@ -90,7 +101,7 @@ export default {
             this.modalTitle = event.target.innerText;
         },
         updateModalText() {
-            console.log(' -update modal text---> ', this.modalText );
+            console.log(' -update modal text---> ', this.modalText);
         },
 
     },
@@ -99,6 +110,7 @@ export default {
   
 <style scoped>
 @import url(../assets/variable.css);
+
 .modal {
     position: fixed;
     top: 0;
@@ -228,6 +240,7 @@ export default {
     margin-top: 4px;
     transition: transform 0.2s ease;
 }
+
 .remove-card-btn:hover {
     transform: scale(1.08);
 }
@@ -258,6 +271,6 @@ export default {
     overflow-wrap: break-word;
     font-size: 12px;
     line-height: 1.5;
-    
+
 }
 </style>
