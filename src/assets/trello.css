@@ -61,9 +61,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-.list:hover {
-  transform: scale(1.02);
-}
 
 .list-title {
   font-family: Arial, Helvetica, sans-serif;
