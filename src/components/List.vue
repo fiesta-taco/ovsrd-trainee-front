@@ -1,20 +1,16 @@
 <template>
-    <div class="list">
+    <div  
+        :class="{'swiper-slide':mobile, 'list':!mobile}"
+    >
         <div class="title-block">
-            <div>
-                <div 
-                    v-if="!editing" 
-                    class="list-title" 
-                    @click="editing = true"
-                >
-                    {{ list.title }}
-                </div>
-                <input 
-                    v-else 
-                    v-model="newListTitle" 
+            <div>     
+                <input   
+                    ref="inputField"                     
+                    v-model="newListTitle"
+                    class="input-list-title" 
                     @keyup.enter="saveListTitle" 
                     @blur="saveListTitle"
-                >
+                >  
             </div>
             <div 
                 class="delete-button" 
@@ -31,53 +27,33 @@
             />
         </div>
         <div 
-            v-if="!addCardIsActive" 
             class="add-card"
-            @click="activateAddSpace"
+            @click="addCard"
         >
-            <!-- -->
             <div class="addcard-text">
                 +
             </div>
-            <div class="addcard-text">
+            <div 
+                class="addcard-text"
+            >
                 Add Card
             </div>
-        </div>
-        <div 
-            v-else 
-            class="card"
-        >
-            <div style="display: flex; justify-content: space-between;">
-                <input 
-                    v-model="newCardTitle" 
-                    class="input-card" 
-                    placeholder="add title" 
-                    @blur="addCardIsActive = false"
-                    @keyup.enter="addCard"
-                >
-                <b-button 
-                    class="input-btn" 
-                    @click="addCard"
-                >
-                    +
-                </b-button>
-            </div>
-        </div>
+        </div> 
     </div>
 </template>
 
 <script>
 import Card from './Card.vue';
-import Swiper from 'swiper';
-import { Navigation } from 'swiper/modules';
 
 export default {
     name: 'ListV',
     components: {
         Card,
     },
-
     props: {
+        mobile:{
+            type:Boolean,
+        },
         list: {
             type: Object,
             required: true,
@@ -86,55 +62,24 @@ export default {
     },
     data() {
         return {
-            addCardIsActive: false,
-            swiper: null,
             editing: false,
-            newCardTitle: '',
             newListTitle: this.list.title,
         };
     },
 
-    mounted() {
-        if (window.innerWidth <= 767) {
-            this.initSwiper();
-        }
-        window.addEventListener('resize', this.handleResize);
-    },
-    beforeDestroy() {
-        window.removeEventListener('resize', this.handleResize);
-        if (this.swiper) {
-            this.swiper = null;
-        }
-    },
-
+   
     methods: {
-        initSwiper() {
-            const swiperOptions = {
-                modules: [Navigation],
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-            };
-            this.swiper = new Swiper('.swiper-container', swiperOptions);
-        },
-        handleResize() {
-            if (window.innerWidth <= 767 && !this.swiper) {
-                this.initSwiper();
-            } else if (window.innerWidth > 767 && this.swiper) {
-                this.swiper = null;
+       
+        changeEditing() {
+            if(this.editing){
+                this.editing = false;
+            }else{
+                this.editing = true;
             }
-        },
-        activateAddSpace() {
-            this.addCardIsActive = true;
         },
         addCard() {
-            if (this.newCardTitle.trim() !== '') {
-                this.addCardIsActive = false;
-                this.$emit('add-card', this.list.id, this.newCardTitle.trim());
-                this.newCardTitle = '';
-            }
-
+            this.$emit('add-card', this.list.id, 'New Card');
+ 
         },
         openModalCard(cardId) {
             this.$emit('open-modal-card', this.list.id, cardId);
@@ -149,10 +94,12 @@ export default {
             if (this.newListTitle.trim() !== '') {
                 this.editing = false;
                 this.$emit('update-list-title', this.list.id, this.newListTitle);
+                this.$refs.inputField.blur();
             }
         },
     },
 };
 
 </script>
-<style src="../assets/trello.css"></style>
+<style src="../assets/trello.css">
+</style>

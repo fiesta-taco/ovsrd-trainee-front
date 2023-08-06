@@ -4,25 +4,26 @@
         <div class="headline">
             <h1> Igorello</h1>
         </div>
-
-        <div class="board">
-            <List
-                v-for="list in lists"
-                :key="list.id"
-                :list="list"
-                @add-card="addCardToList"
-                @update-list-title="updateListTitle"
-                @delete-card="deleteCard"
-                @delete-list="deleteList"
-                @open-modal-card="openModalCard"
-            />
-            <div
-                class="add-list"
-                @click="addNewList"
-            >
-                + add list
-            </div>
-        </div>
+        
+        <SwiperBoard 
+            v-if="useSwiper"
+            :lists="lists"
+            @add-card="addCardToList"
+            @update-list-title="updateListTitle"
+            @delete-card="deleteCard"
+            @delete-list="deleteList"
+            @open-modal-card="openModalCard"  
+        />
+        <DeskBoard 
+            v-else
+            :lists="lists"
+            @add-card="addCardToList"
+            @update-list-title="updateListTitle"
+            @delete-card="deleteCard"
+            @delete-list="deleteList"
+            @open-modal-card="openModalCard"             
+        />
+        
         <CardModal
             v-if="isModalOpen"
             :card="modalCard"
@@ -38,18 +39,25 @@
 </template>
 
 <script>
-import List from './List.vue';
 import CardModal from './CardModal.vue';
-
+import SwiperBoard from './SwiperBoard.vue';
+import DeskBoard from './DeskBoard.vue';
 
 export default {
     name: 'BoardV',
     components: {
-        List,
         CardModal,
+        SwiperBoard,
+        DeskBoard,
+    },
+    provide(){
+        return {
+            addNewList:this.addNewList,
+        };
     },
     data() {
         return {
+            useSwiper:false,
             isModalOpen: false,
             modalCard: null,
             modalListId: '',
@@ -67,9 +75,23 @@ export default {
         };
     },
 
+    mounted() {
+        if(window.innerWidth < 676){
+            this.useSwiper = true;
+        }
+        window.addEventListener('resize', this.handleResize);
+    },
 
     methods: {
 
+        handleResize() {
+            if (window.innerWidth < 767) {
+                this.useSwiper = true;
+            } else if (window.innerWidth > 767) {
+                this.useSwiper = false;
+            }
+        },
+        
         addCardToList(listId, cardTitle) {
             const list = this.lists.find(list => list.id === listId);
             if (list) {
@@ -137,6 +159,7 @@ export default {
                 card.id = cardIndex + 1;
                 return card;
             });
+            
         },
     },
 };

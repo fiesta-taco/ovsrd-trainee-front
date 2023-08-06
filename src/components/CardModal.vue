@@ -6,10 +6,10 @@
                 alt=""
             >
             <div class="modal-title-block">
-                <div 
+                <div
+                    ref="cardTitle"
                     class="card-modal-title" 
-                    :contenteditable="isEditText" 
-                    @input="updateModalTitle"
+                    :contenteditable="true" 
                 >
                     {{ modalTitle }}
                 </div>
@@ -20,29 +20,27 @@
             </div>
             <div class="main-text-tools">
                 <div class="main-text">
-                    <textarea 
-                        v-if="isEditText" 
-                        v-model="modalText" 
+                    <div
+                        ref="cardText"
                         class="input-in-module" 
-                        @input="updateModalText"
-                    />
-                    <p v-else>
+                        contenteditable="true"
+                    >
                         {{ modalText }}
-                    </p>
+                    </div>
                 </div>
                 <div class="tools">
                     <div 
-                        class="edit-text-btn"
-                        @click="openTextEdit" 
-                    />
-                    <div 
-                        class="remove-card-btn" 
-                        @click="deleteModalCard" 
-                    />
+                        class="reset-card-btn" 
+                        @click="resetModal" 
+                    >
+                        Reset
+                    </div>
                     <div 
                         class="save-card-btn" 
                         @click="saveCard" 
-                    />
+                    >
+                        Save
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,12 +85,13 @@ export default {
             this.$emit('delete-card', this.listId, this.card.id);
         },
         saveCard() {
-            //  console.log("before save ==>",this.modalTitle," == ", this.modalText)
-            if (this.modalTitle.trim() !== '' && this.modalText.trim() !== '') {
+            const title = this.$refs.cardTitle.textContent;
+            const text = this.$refs.cardText.textContent;
+            if (title.trim() !== '' && text.trim() !== '') {
                 const newCard = {
                     id: this.card.id,
-                    title: this.modalTitle,
-                    text: this.modalText,
+                    title: title,
+                    text: text,
                 };
                 this.$emit('save-card', this.listId, newCard);
             }
@@ -100,8 +99,9 @@ export default {
         updateModalTitle(event) {
             this.modalTitle = event.target.innerText;
         },
-        updateModalText() {
-            console.log(' -update modal text---> ', this.modalText);
+        resetModal(){
+            this.modalTitle= this.card.title;
+            this.modalText= this.card.text;
         },
 
     },
@@ -112,7 +112,7 @@ export default {
 @import url(../assets/variable.css);
 
 .modal {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -125,12 +125,14 @@ export default {
 
 /* Modal Content   */
 .modal-content {
-    background-color: var(--modal-content-background-color);
+    background-color: var(--list-background);
     border-radius: 2%;
     margin: auto;
     padding: 10px;
     width: 30%;
     max-height: 70%;
+    min-width: 350px;
+    min-height: 220px;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -145,18 +147,21 @@ export default {
 }
 
 .card-modal-title {
+      background: #0000;
+    font-weight: 600;
+    position: relative;
+    border-style: none;
+    font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 150%;
     text-align: left;
     color: var(--card-modal-title-color);
-    flex-wrap: nowrap;
-    overflow: hidden;
     margin: 5%;
     border-bottom: 1px solid var(--card-modal-title-border-bottom);
 }
 
 .main-text-tools {
-    display: flex;
+
     justify-content: space-between;
     height: max-content;
 }
@@ -171,12 +176,12 @@ export default {
     font-size: 14px;
     line-height: 1;
     text-align: left;
+    margin-left: 5%;
 }
 
 .tools {
     /* background-color: #b8b5b8;*/
     display: flex;
-    flex-direction: column;
     justify-content: flex-end;
     border-radius: 5px;
 }
@@ -229,47 +234,50 @@ export default {
     transform: scale(1.08);
 }
 
-.remove-card-btn {
-    background-image: url("../assets/remove.svg");
+.reset-card-btn {
+    background-color: var(--btn-save);
     position: relative;
     display: block;
-    width: 24px;
+    cursor: pointer;
+    width: 50px;
     height: 24px;
     border-bottom-left-radius: 1px;
     border-bottom-right-radius: 1px;
-    margin-top: 4px;
-    transition: transform 0.2s ease;
+    border-radius: 5px;
+    margin: 12px;
+    
 }
 
-.remove-card-btn:hover {
-    transform: scale(1.08);
+.reset-card-btn:hover {
+    background-color: var(--btn-save-hover);
 }
 
 .save-card-btn {
-    background-image: url("../assets/enter.svg");
+    background-color: var(--btn-save);
     position: relative;
     display: block;
-    width: 24px;
+    cursor: pointer;
+    width: 50px;
     height: 24px;
     border-bottom-left-radius: 1px;
     border-bottom-right-radius: 1px;
-    margin-top: 4px;
-    transition: transform 0.2s ease;
+    border-radius: 5px;
+    margin: 12px;
 }
 
 .save-card-btn:hover {
-    transform: scale(1.08);
+    background-color: var(--btn-save-hover);
 }
 
 .input-in-module {
-    width: 90%;
-    height: 80%;
+    width: 100%;
+    min-height: 120px;
     border-radius: 5px;
     background-color: #b8b5b882;
     padding: 8px;
     white-space: pre-wrap;
     overflow-wrap: break-word;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.5;
 
 }
