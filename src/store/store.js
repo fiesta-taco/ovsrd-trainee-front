@@ -31,7 +31,7 @@ let store = new Vuex.Store({
     actions: {
         async getListsApi({ commit }) {
             try {
-                const response = await axios.get('http://localhost:3000/dev/lists');
+                const response = await axios.get('https://pi4rmhjdmj.execute-api.us-east-1.amazonaws.com/dev/lists');
                 commit('SET_LISTS', response.data);
             } catch (error) {
                 console.error(error);
@@ -39,7 +39,7 @@ let store = new Vuex.Store({
         },
         async createListApi({ commit }, newList) {
             try {
-                const response = await axios.post('http://localhost:3000/dev/list', newList);
+                const response = await axios.post('https://pi4rmhjdmj.execute-api.us-east-1.amazonaws.com/dev/list', newList);
                 commit('CREATE_LIST', response.data.list);
             } catch (error) {
                 console.error(error);
@@ -48,7 +48,7 @@ let store = new Vuex.Store({
 
         async updateListTitleApi({ commit }, list) {
             try {
-                const response = await axios.put('http://localhost:3000/dev/list ', list);
+                const response = await axios.put('https://pi4rmhjdmj.execute-api.us-east-1.amazonaws.com/dev/list', list);
                 commit('UPDATE_LIST', response.data.list);
             } catch (error) {
                 console.error(error);
@@ -58,7 +58,7 @@ let store = new Vuex.Store({
 
         async deleteListApi({ dispatch }, listId) {
             try {
-                const response = await axios.delete(`http://localhost:3000/dev/list/${listId}`)
+                const response = await axios.delete(`https://pi4rmhjdmj.execute-api.us-east-1.amazonaws.com/dev/list/${listId}`)
                 if (response.data.ok) {
                     await dispatch('getListsApi');
                 }
