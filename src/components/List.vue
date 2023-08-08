@@ -20,7 +20,7 @@
         <div class="card-box">
             <Card 
                 v-for="card in list.cards" 
-                :key="card.id" 
+                :key="card.cardId" 
                 :card="card" 
                 @open-modal-card="openModalCard"
                 @delete-card="deleteCard" 
@@ -78,22 +78,27 @@ export default {
             }
         },
         addCard() {
-            this.$emit('add-card', this.list.id, 'New Card');
+            this.$emit('add-card', this.list.listId, 'New Card');
  
         },
-        openModalCard(cardId) {
-            this.$emit('open-modal-card', this.list.id, cardId);
+        openModalCard(card) {
+            this.$emit('open-modal-card', card);
         },
-        deleteCard(cardId) {
-            this.$emit('delete-card', this.list.id, cardId);
+        deleteCard(card) {
+            this.$emit('delete-card', card);
         },
         deleteList() {
-            this.$emit('delete-list', this.list.id);
+            this.$emit('delete-list', this.list.listId);
         },
         saveListTitle() {
             if (this.newListTitle.trim() !== '') {
                 this.editing = false;
-                this.$emit('update-list-title', this.list.id, this.newListTitle);
+                const list={
+                    listId:this.list.listId,
+                    title:this.newListTitle,
+                    position:this.list.position,
+                };
+                this.$emit('update-list-title', list);
                 this.$refs.inputField.blur();
             }
         },

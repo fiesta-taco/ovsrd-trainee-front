@@ -6,16 +6,15 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+
 import Board from './components/Board';
 
-export default defineComponent({
+export default {
     name: 'App',
     components: {
         Board,
     },
-},
-);
+};
 </script>
 
 <style src="./assets/trello.css"></style>

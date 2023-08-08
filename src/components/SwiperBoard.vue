@@ -6,7 +6,7 @@
         <div class="swiper-wrapper">
             <List
                 v-for="list in lists"
-                :key="list.id"
+                :key="list.cardId"
                 :list="list"
                 :mobile="true"
                 @add-card="addCardToListFromSwiperBoard"
@@ -37,7 +37,7 @@
 <script>
 import List from './List.vue';
 import Swiper from 'swiper/bundle'; 
-/* eslint-disable */
+
 import 'swiper/swiper-bundle.css';
 
 
@@ -93,17 +93,17 @@ export default {
         addCardToListFromSwiperBoard(listId,titleCard){
             this.$emit('add-card', listId, titleCard);
         },
-        updateListTitleSwiperBoard(listId,newListTitle){
-            this.$emit('update-list-title', listId, newListTitle);
+        updateListTitleSwiperBoard(list){
+            this.$emit('update-list-title', list);
         },
-        deleteCardSwiper(listId, cardId){
-            this.$emit('delete-card', listId, cardId);
+        deleteCardSwiper(card){
+            this.$emit('delete-card', card);
         },
         deleteListSwiper(listId){
             this.$emit('delete-list', listId);
         },
-        openModalCardSwiper(listId,cardId){
-            this.$emit('open-modal-card', listId,cardId);
+        openModalCardSwiper(card){
+            this.$emit('open-modal-card', card);
         },
 
     },

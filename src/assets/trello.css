@@ -83,7 +83,7 @@ body {
 .input-list-title{
   background: #0000;
     font-family: Arial, Helvetica, sans-serif;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--list-title-color);
     cursor: pointer;
     position: relative;

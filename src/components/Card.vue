@@ -36,13 +36,13 @@ export default {
     },
     methods: {
         openModalCard() {
-            this.$emit('open-modal-card', this.card.id);
+            this.$emit('open-modal-card', this.card);
         },
         closeModal() {
             this.isModalOpen = false;
         },
         deleteCard() {
-            this.$emit('delete-card', this.card.id);
+            this.$emit('delete-card', this.card);
         },
 
     },

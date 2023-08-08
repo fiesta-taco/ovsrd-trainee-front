@@ -4,7 +4,7 @@
     >
         <List
             v-for="list in lists"
-            :key="list.id"
+            :key="list.cardId"
             :list="list"
             :mobile="false"
             @add-card="addCardToListFromDeskBoard"
@@ -43,17 +43,17 @@ export default {
         addCardToListFromDeskBoard(listId,titleCard){
             this.$emit('add-card', listId, titleCard);
         },
-        updateListTitleDeskBoard(listId,newListTitle){
-            this.$emit('update-list-title', listId, newListTitle);
+        updateListTitleDeskBoard(list){
+            this.$emit('update-list-title', list);
         },
-        deleteCardDesk(listId,cardId){
-            this.$emit('delete-card', listId, cardId);
+        deleteCardDesk(card){
+            this.$emit('delete-card', card);
         },
         deleteListDesk(listId){
             this.$emit('delete-list', listId);
         },
-        openModalCardDesk(listId,cardId){
-            this.$emit('open-modal-card', listId,cardId);
+        openModalCardDesk(card){
+            this.$emit('open-modal-card', card);
         },
     },
   

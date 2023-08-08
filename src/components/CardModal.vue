@@ -56,11 +56,6 @@ export default {
             required: true,
             default: () => ({}),
         },
-        listId: {
-            type: Number,
-            required: true,
-            default: () => (null),
-        },
     },
     data() {
         return {
@@ -81,19 +76,18 @@ export default {
                 this.isEditText = true;
             }
         },
-        deleteModalCard() {
-            this.$emit('delete-card', this.listId, this.card.id);
-        },
+        
         saveCard() {
             const title = this.$refs.cardTitle.textContent;
             const text = this.$refs.cardText.textContent;
             if (title.trim() !== '' && text.trim() !== '') {
                 const newCard = {
-                    id: this.card.id,
+                    cardId: this.card.cardId,
                     title: title,
                     text: text,
+                    position:this.card.position,
                 };
-                this.$emit('save-card', this.listId, newCard);
+                this.$emit('save-card',newCard);
             }
         },
         updateModalTitle(event) {
@@ -206,6 +200,7 @@ export default {
     background-image: url("../assets/close.svg");
     position: relative;
     display: block;
+    cursor: pointer;
     width: 24px;
     height: 24px;
     border-bottom-left-radius: 1px;
