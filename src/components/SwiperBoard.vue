@@ -96,8 +96,8 @@ export default {
         updateListTitleSwiperBoard(list){
             this.$emit('update-list-title', list);
         },
-        deleteCardSwiper(card){
-            this.$emit('delete-card', card);
+        deleteCardSwiper(cardId){
+            this.$emit('delete-card', cardId);
         },
         deleteListSwiper(listId){
             this.$emit('delete-list', listId);

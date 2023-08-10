@@ -62,21 +62,16 @@ export default {
     },
     data() {
         return {
-            editing: false,
             newListTitle: this.list.title,
         };
     },
-
-   
+    watch: {
+        'list.title': function(newTitle) {
+            this.newListTitle = newTitle;
+        },
+    },   
     methods: {
        
-        changeEditing() {
-            if(this.editing){
-                this.editing = false;
-            }else{
-                this.editing = true;
-            }
-        },
         addCard() {
             this.$emit('add-card', this.list.listId, 'New Card');
  
@@ -92,7 +87,6 @@ export default {
         },
         saveListTitle() {
             if (this.newListTitle.trim() !== '') {
-                this.editing = false;
                 const list={
                     listId:this.list.listId,
                     title:this.newListTitle,

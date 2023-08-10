@@ -28,8 +28,7 @@
             v-if="isModalOpen"
             :card="modalCard"
             @close-modal="closeModal"
-            @delete-card="deleteCard"
-            @save-card="saveCard"
+            @update-card="updateCard"
         />
         <div class="bottom-bar">
             <p> Produced by Ihor Bilash </p>
@@ -63,20 +62,19 @@ export default {
             editing: false,
         };
     },
-    computed:{
-        ...mapState(['lists']),
-        
-    },
+    computed:mapState({
+        lists:state=>state.lists,
+    }), 
     mounted() {
-        this.getListsApi();
         if(window.innerWidth < 676){
             this.useSwiper = true;
         }
+        this.getListsApi();
         window.addEventListener('resize', this.handleResize);
     },
 
     methods: {
-        ...mapActions(['getListsApi','createListApi','updateListTitleApi','deleteListApi']),
+        ...mapActions(['getListsApi','createListApi','updateListTitleApi','deleteListApi','createCardApi','updateCardApi','deleteCardApi']),
         handleResize() {
             if (window.innerWidth < 767) {
                 this.useSwiper = true;
@@ -86,9 +84,22 @@ export default {
         },
         
         addCardToList(listId, cardTitle) {
-            const list = this.lists.find(list => list.id === listId);
-            if (list) {
-                list.cards.push({ id: Date.now(), title: cardTitle, text: '' });
+            const cardsLengthInThisList = this.getCardsLengthByList(listId);
+            const newPosition = cardsLengthInThisList+1;
+            const list = {
+                listId:listId,
+                title:cardTitle,
+                cardText:'',
+                position:newPosition,
+            };
+            this.createCardApi(list);
+        },
+        getCardsLengthByList(listId){
+            const list = this.lists.find(list=>list.listId===listId);
+            if(list.cards){
+                return list.cards.length;
+            }else{
+                return 0;
             }
         },
         addNewList() {
@@ -110,43 +121,18 @@ export default {
         closeModal() {
             this.isModalOpen = false;
         },
-        saveCard(newCard) {
-            const updatedlist = this.lists.find(list => list.listId === newCard.listId);
-            const updatedCard = updatedlist.cards.find(card => card.cardId === newCard.cardId);
-            if (updatedCard) {
-                updatedCard.title = newCard.title;
-                updatedCard.text = newCard.text;
-            }
+        async updateCard(newCard) {
+            await this.updateCardApi(newCard);
             this.isModalOpen = false;
-            //   console.log("save after modal card===>>>", this.lists)
         },
-        deleteCard(card) {
-            const updatedList = this.lists.find(list => list.listId === card.listId);
-            const cards = updatedList.cards.filter(card => card.cardId !== card.cardId);
-            if (cards) {
-                const renamedPositionCards = this.updateCardIds(cards);
-                updatedList.cards = renamedPositionCards;
-            }
+        async deleteCard(card) {
+            await this.deleteCardApi(card);
             this.isModalOpen = false;
-            //  console.log("after delete card===>>>", this.lists)
         },
         deleteList(listId) {
             this.deleteListApi(listId);
-            //this.updateListIds();
-            //  console.log(" === out list====>>>", this.lists)
         },
-        updateListIds() {
-            this.lists.forEach((list, index) => {
-                list.listId = index + 1;
-            });
-        },
-        updateCardIds(cards) {
-            return cards.map((card, cardIndex) => {
-                card.position = cardIndex + 1;
-                return card;
-            });
-            
-        },
+
     },
 };
 

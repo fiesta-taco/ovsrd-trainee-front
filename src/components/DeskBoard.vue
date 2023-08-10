@@ -46,8 +46,8 @@ export default {
         updateListTitleDeskBoard(list){
             this.$emit('update-list-title', list);
         },
-        deleteCardDesk(card){
-            this.$emit('delete-card', card);
+        deleteCardDesk(cardId){
+            this.$emit('delete-card', cardId);
         },
         deleteListDesk(listId){
             this.$emit('delete-list', listId);

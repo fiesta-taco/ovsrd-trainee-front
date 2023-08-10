@@ -9,7 +9,7 @@
                 <div
                     ref="cardTitle"
                     class="card-modal-title" 
-                    :contenteditable="true" 
+                    contenteditable="true" 
                 >
                     {{ modalTitle }}
                 </div>
@@ -37,7 +37,7 @@
                     </div>
                     <div 
                         class="save-card-btn" 
-                        @click="saveCard" 
+                        @click="updateCard" 
                     >
                         Save
                     </div>
@@ -48,6 +48,8 @@
 </template>
   
 <script>
+
+
 export default {
 
     props: {
@@ -59,9 +61,8 @@ export default {
     },
     data() {
         return {
-            isEditText: false,
             modalTitle: this.card.title,
-            modalText: this.card.text,
+            modalText: this.card.cardText,
 
         };
     },
@@ -69,35 +70,26 @@ export default {
         closeModal() {
             this.$emit('close-modal');
         },
-        openTextEdit() {
-            if (this.isEditText) {
-                this.isEditText = false;
-            } else {
-                this.isEditText = true;
-            }
-        },
         
-        saveCard() {
+        updateCard() {
             const title = this.$refs.cardTitle.textContent;
             const text = this.$refs.cardText.textContent;
-            if (title.trim() !== '' && text.trim() !== '') {
+            if (title.trim() !== '' /*&& text.trim() !== ''*/) {
                 const newCard = {
                     cardId: this.card.cardId,
                     title: title,
-                    text: text,
+                    cardText: text.trim(),
                     position:this.card.position,
                 };
-                this.$emit('save-card',newCard);
+                this.$emit('update-card',newCard);
             }
         },
-        updateModalTitle(event) {
-            this.modalTitle = event.target.innerText;
-        },
         resetModal(){
-            this.modalTitle= this.card.title;
-            this.modalText= this.card.text;
+            this.$nextTick(() => {
+                this.$refs.cardTitle.textContent = this.card.title;
+                this.$refs.cardText.textContent = this.card.cardText;
+            });
         },
-
     },
 };
 </script>

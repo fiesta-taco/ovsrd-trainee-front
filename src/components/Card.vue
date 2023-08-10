@@ -17,7 +17,7 @@
         </div>
 
         <div
-            v-if="card.text!==''"
+            v-if="card.cardText!==''"
             class="is-content"
         /> 
     </div>
