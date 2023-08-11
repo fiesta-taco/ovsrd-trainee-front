@@ -4,32 +4,31 @@
         <div class="headline">
             <h1> Igorello</h1>
         </div>
-
-        <div class="board">
-            <List
-                v-for="list in lists"
-                :key="list.id"
-                :list="list"
-                @add-card="addCardToList"
-                @update-list-title="updateListTitle"
-                @delete-card="deleteCard"
-                @delete-list="deleteList"
-                @open-modal-card="openModalCard"
-            />
-            <div
-                class="add-list"
-                @click="addNewList"
-            >
-                + add list
-            </div>
-        </div>
+        
+        <SwiperBoard 
+            v-if="useSwiper"
+            :lists="lists"
+            @add-card="addCardToList"
+            @update-list-title="updateListTitle"
+            @delete-card="deleteCard"
+            @delete-list="deleteList"
+            @open-modal-card="openModalCard"  
+        />
+        <DeskBoard 
+            v-else
+            :lists="lists"
+            @add-card="addCardToList"
+            @update-list-title="updateListTitle"
+            @delete-card="deleteCard"
+            @delete-list="deleteList"
+            @open-modal-card="openModalCard"             
+        />
+        
         <CardModal
             v-if="isModalOpen"
             :card="modalCard"
-            :list-id="modalListId"
             @close-modal="closeModal"
-            @delete-card="deleteCard"
-            @save-card="saveCard"
+            @update-card="updateCard"
         />
         <div class="bottom-bar">
             <p> Produced by Ihor Bilash </p>
@@ -38,106 +37,102 @@
 </template>
 
 <script>
-import List from './List.vue';
 import CardModal from './CardModal.vue';
-
+import SwiperBoard from './SwiperBoard.vue';
+import DeskBoard from './DeskBoard.vue';
+import {mapActions ,mapState}from 'vuex';
 
 export default {
     name: 'BoardV',
     components: {
-        List,
         CardModal,
+        SwiperBoard,
+        DeskBoard,
+    },
+    provide(){
+        return {
+            addNewList:this.addNewList,
+        };
     },
     data() {
         return {
+            useSwiper:false,
             isModalOpen: false,
             modalCard: null,
-            modalListId: '',
             editing: false,
-            newListTitle: '',
-            lists: [
-                { id: 1, title: 'List 1', cards: [] },
-                {
-                    id: 2, title: 'List 4324', cards: [
-                        { id: 1, title: 'AAA', text: ' some default text' },
-                        { id: 2, title: 'bbb', text: ' some ------- text' },
-                    ],
-                },
-            ],
         };
     },
-
+    computed:mapState({
+        lists:state=>state.lists,
+    }), 
+    mounted() {
+        if(window.innerWidth < 676){
+            this.useSwiper = true;
+        }
+        this.getListsApi();
+        window.addEventListener('resize', this.handleResize);
+    },
 
     methods: {
-
-        addCardToList(listId, cardTitle) {
-            const list = this.lists.find(list => list.id === listId);
-            if (list) {
-                list.cards.push({ id: Date.now(), title: cardTitle, text: '' });
+        ...mapActions(['getListsApi','createListApi','updateListTitleApi','deleteListApi','createCardApi','updateCardApi','deleteCardApi']),
+        handleResize() {
+            if (window.innerWidth < 767) {
+                this.useSwiper = true;
+            } else if (window.innerWidth > 767) {
+                this.useSwiper = false;
             }
-            //  console.log("after add card to list===>>>", this.lists)
+        },
+        
+        addCardToList(listId, cardTitle) {
+            const cardsLengthInThisList = this.getCardsLengthByList(listId);
+            const newPosition = cardsLengthInThisList+1;
+            const list = {
+                listId:listId,
+                title:cardTitle,
+                cardText:'',
+                position:newPosition,
+            };
+            this.createCardApi(list);
+        },
+        getCardsLengthByList(listId){
+            const list = this.lists.find(list=>list.listId===listId);
+            if(list.cards){
+                return list.cards.length;
+            }else{
+                return 0;
+            }
         },
         addNewList() {
             const newList = {
-                id: this.lists.length + 1,
+                position: this.lists.length + 1,
                 title: 'New List',
-                cards: [],
             };
-            this.lists.push(newList);
-            this.newListTitle = '';
+            this.createListApi(newList);
         },
-        updateListTitle(listId, newTitle) {
-            const updatedList = this.lists.find((list) => list.id === listId);
-            if (updatedList) {
-                updatedList.title = newTitle;
-            }
+        updateListTitle(list) {
+            this.updateListTitleApi(list);
         },
-        openModalCard(listId, cardId) {
-            const updatedlist = this.lists.find(list => list.id === listId);
-            const updatedCard = updatedlist.cards.find(card => card.id === cardId);
+        openModalCard(currentCard) {
+            const updatedlist = this.lists.find(list => list.listId === currentCard.listId);
+            const updatedCard = updatedlist.cards.find(card => card.cardId === currentCard.cardId);
             this.modalCard = updatedCard;
-            this.modalListId = listId;
             this.isModalOpen = true;
         },
         closeModal() {
             this.isModalOpen = false;
         },
-        saveCard(listId, newCard) {
-            const updatedlist = this.lists.find(list => list.id === listId);
-            const updatedCard = updatedlist.cards.find(card => card.id === newCard.id);
-            if (updatedCard) {
-                updatedCard.title = newCard.title;
-                updatedCard.text = newCard.text;
-            }
+        async updateCard(newCard) {
+            await this.updateCardApi(newCard);
             this.isModalOpen = false;
-            //   console.log("save after modal card===>>>", this.lists)
         },
-        deleteCard(listId, cardId) {
-            const updatedList = this.lists.find(list => list.id === listId);
-            const cards = updatedList.cards.filter(card => card.id !== cardId);
-            if (cards) {
-                const renamedIdCards = this.updateCardIds(cards);
-                updatedList.cards = renamedIdCards;
-            }
+        async deleteCard(card) {
+            await this.deleteCardApi(card);
             this.isModalOpen = false;
-            //  console.log("after delete card===>>>", this.lists)
         },
         deleteList(listId) {
-            this.lists = this.lists.filter(list => list.id !== listId);
-            this.updateListIds();
-            //  console.log(" === out list====>>>", this.lists)
+            this.deleteListApi(listId);
         },
-        updateListIds() {
-            this.lists.forEach((list, index) => {
-                list.id = index + 1;
-            });
-        },
-        updateCardIds(cards) {
-            return cards.map((card, cardIndex) => {
-                card.id = cardIndex + 1;
-                return card;
-            });
-        },
+
     },
 };
 

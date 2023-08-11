@@ -1,0 +1,63 @@
+<template>
+    <div
+        class="board"
+    >
+        <List
+            v-for="list in lists"
+            :key="list.cardId"
+            :list="list"
+            :mobile="false"
+            @add-card="addCardToListFromDeskBoard"
+            @update-list-title="updateListTitleDeskBoard"  
+            @delete-card="deleteCardDesk"  
+            @delete-list="deleteListDesk"
+            @open-modal-card="openModalCardDesk"
+        />    
+        <div
+            class="add-list"
+            @click="addNewList"
+        >
+            + add list
+        </div>                
+    </div>
+</template>
+
+<script>
+import List from './List.vue';
+
+
+export default {
+    name: 'DeskBoard',
+    components: {
+        List,
+    },
+    inject:['addNewList'],
+    props:{
+        lists:{
+            type: Array,
+            required: true,
+            default: () => ([]),
+        },
+    },
+    methods:{
+        addCardToListFromDeskBoard(listId,titleCard){
+            this.$emit('add-card', listId, titleCard);
+        },
+        updateListTitleDeskBoard(list){
+            this.$emit('update-list-title', list);
+        },
+        deleteCardDesk(cardId){
+            this.$emit('delete-card', cardId);
+        },
+        deleteListDesk(listId){
+            this.$emit('delete-list', listId);
+        },
+        openModalCardDesk(card){
+            this.$emit('open-modal-card', card);
+        },
+    },
+  
+};
+
+</script>
+<style src="../assets/trello.css"></style>

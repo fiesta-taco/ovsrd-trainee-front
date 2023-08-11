@@ -17,7 +17,7 @@
         </div>
 
         <div
-            v-if="card.text!==''"
+            v-if="card.cardText!==''"
             class="is-content"
         /> 
     </div>
@@ -36,13 +36,13 @@ export default {
     },
     methods: {
         openModalCard() {
-            this.$emit('open-modal-card', this.card.id);
+            this.$emit('open-modal-card', this.card);
         },
         closeModal() {
             this.isModalOpen = false;
         },
         deleteCard() {
-            this.$emit('delete-card', this.card.id);
+            this.$emit('delete-card', this.card);
         },
 
     },
