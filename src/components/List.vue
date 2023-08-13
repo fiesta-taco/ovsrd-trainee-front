@@ -18,13 +18,19 @@
             /> 
         </div>
         <div class="card-box">
-            <Card 
-                v-for="card in list.cards" 
-                :key="card.cardId" 
-                :card="card" 
-                @open-modal-card="openModalCard"
-                @delete-card="deleteCard" 
-            />
+            <draggable 
+                v-model="localList" 
+                :move="dragAndDropCard" 
+                :options="draggableOptions"
+            >
+                <Card 
+                    v-for="card in list.cards" 
+                    :key="card.cardId" 
+                    :card="card" 
+                    @open-modal-card="openModalCard"
+                    @delete-card="deleteCard" 
+                />
+            </draggable>
         </div>
         <div 
             class="add-card"
@@ -44,11 +50,13 @@
 
 <script>
 import Card from './Card.vue';
+import draggable from 'vuedraggable';
 
 export default {
     name: 'ListV',
     components: {
         Card,
+        draggable,
     },
     props: {
         mobile:{
@@ -63,6 +71,11 @@ export default {
     data() {
         return {
             newListTitle: this.list.title,
+            localList: this.list.cards,
+            draggableOptions: {
+                group: 'lists', 
+                animation: 150, 
+            },
         };
     },
     watch: {
@@ -71,6 +84,21 @@ export default {
         },
     },   
     methods: {
+        dragAndDropCard(event){
+            
+            const movedCard = event.draggedContext.element;
+            const options={
+                oldIndexArray : event.draggedContext.index,
+                oldListId : this.list.listId,
+                futureIndexArray: event.draggedContext.futureIndex,
+                toList : event.to.parentNode.parentNode.getAttribute('list-key'),
+            };
+          
+            
+
+            this.$emit('drag-card',options,movedCard);
+
+        },
        
         addCard() {
             this.$emit('add-card', this.list.listId, 'New Card');

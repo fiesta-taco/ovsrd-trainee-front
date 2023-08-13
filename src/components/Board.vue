@@ -21,7 +21,8 @@
             @update-list-title="updateListTitle"
             @delete-card="deleteCard"
             @delete-list="deleteList"
-            @open-modal-card="openModalCard"             
+            @open-modal-card="openModalCard"  
+            @drag-card="dragCard"           
         />
         
         <CardModal
@@ -74,7 +75,8 @@ export default {
     },
 
     methods: {
-        ...mapActions(['getListsApi','createListApi','updateListTitleApi','deleteListApi','createCardApi','updateCardApi','deleteCardApi']),
+        ...mapActions(['getListsApi','createListApi','updateListTitleApi',
+            'deleteListApi','createCardApi','updateCardApi','deleteCardApi','dragAndDropCardApi']),
         handleResize() {
             if (window.innerWidth < 767) {
                 this.useSwiper = true;
@@ -131,6 +133,11 @@ export default {
         },
         deleteList(listId) {
             this.deleteListApi(listId);
+        },
+        dragCard(options,movedCard){
+            
+            const data={}
+            this.dragAndDropCardApi(data);
         },
 
     },

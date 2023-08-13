@@ -110,6 +110,7 @@ body {
   border-radius: 20px;
   border: 4px solid var(--scrollbar-border);
   width: 10px;
+  -webkit-transform: translateZ(0);
 }
 
 .card-title {

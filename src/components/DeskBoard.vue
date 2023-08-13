@@ -6,12 +6,14 @@
             v-for="list in lists"
             :key="list.cardId"
             :list="list"
+            :list-key="list.listId"
             :mobile="false"
             @add-card="addCardToListFromDeskBoard"
             @update-list-title="updateListTitleDeskBoard"  
             @delete-card="deleteCardDesk"  
             @delete-list="deleteListDesk"
             @open-modal-card="openModalCardDesk"
+            @drag-card="dragCard"
         />    
         <div
             class="add-list"
@@ -54,6 +56,9 @@ export default {
         },
         openModalCardDesk(card){
             this.$emit('open-modal-card', card);
+        },
+        dragCard(options,movedCard){
+            this.$emit('drag-card',options,movedCard)
         },
     },
   
