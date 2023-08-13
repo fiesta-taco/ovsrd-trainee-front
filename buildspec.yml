@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - npm install
+      - pip install --upgrade awscli
+      - echo $DEV_ENV
+      - echo $S3_NAME
+      - echo $CL_FRONT_DIST_ID
+  build:
+    commands:
+      - npm run build
+      - aws s3 rm s3://$S3_NAME --recursive 
+      - aws s3 sync ./dist s3://$S3_NAME --acl public-read --cache-control max-age=259200 #caching will be relevant for 3 days  
+      - aws cloudfront create-invalidation --distribution-id $CL_FRONT_DIST_ID --paths '/*' # AWS_MAX_ATTEMPTS=10 
+
+
+
+
