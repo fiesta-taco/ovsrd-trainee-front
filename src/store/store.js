@@ -43,7 +43,7 @@ let store = new Vuex.Store({
     actions: {
         async getListsApi({ commit }) {
             try {
-                const response = await axios.get(`${BASE_URL}/igorello/lists`);
+                const response = await axios.get(`${BASE_URL}/dev/lists`);
                 commit('SET_LISTS', response.data.lists);
             } catch (error) {
                 console.error(error);
@@ -51,7 +51,7 @@ let store = new Vuex.Store({
         },
         async createListApi({ dispatch }, newList) {
             try {
-                const response = await axios.post(`${BASE_URL}/igorello/list`, newList);
+                const response = await axios.post(`${BASE_URL}/dev/list`, newList);
                 if(response.data.list){
                     await dispatch('getListsApi');
                 }        
@@ -62,7 +62,7 @@ let store = new Vuex.Store({
 
         async updateListTitleApi({ commit }, list) {
             try {
-                const response = await axios.put(`${BASE_URL}/igorello/list`, list);
+                const response = await axios.put(`${BASE_URL}/dev/list`, list);
                 if(response.data.list){
                     commit('UPDATE_LIST_TITLE', response.data.list);
                 }
@@ -73,7 +73,7 @@ let store = new Vuex.Store({
 
         async deleteListApi({ dispatch }, listId) {
             try {
-                const response = await axios.delete(`${BASE_URL}/igorello/list/${listId}`);
+                const response = await axios.delete(`${BASE_URL}/dev/list/${listId}`);
                 if (response.data.ok) {       
                     await dispatch('getListsApi');
                 }
@@ -84,7 +84,7 @@ let store = new Vuex.Store({
 
         async createCardApi({dispatch},card){
             try {
-                const response = await axios.post(`${BASE_URL}/igorello/card`, card);
+                const response = await axios.post(`${BASE_URL}/dev/card`, card);
                 if(response.data.card){
                     await dispatch('getCardsByListId',response.data.card.listId);
                 }
@@ -94,7 +94,7 @@ let store = new Vuex.Store({
         },
         async updateCardApi({dispatch},card){
             try {
-                const response = await axios.put(`${BASE_URL}/igorello/card`, card);
+                const response = await axios.put(`${BASE_URL}/dev/card`, card);
                 if(response.data.card){
                     await dispatch('getCardsByListId',response.data.card.listId);
                 }
@@ -105,7 +105,7 @@ let store = new Vuex.Store({
         },
         async deleteCardApi({dispatch},card){
             try {
-                const response = await axios.delete(`${BASE_URL}/igorello/card/${card.cardId}`);
+                const response = await axios.delete(`${BASE_URL}/dev/card/${card.cardId}`);
                 if (response.data.ok) {       
                     await dispatch('getCardsByListId',card.listId);
                 }
@@ -115,7 +115,7 @@ let store = new Vuex.Store({
         },
         async getCardsByListId({commit},listId){
             try {
-                const response = await axios.get(`${BASE_URL}/igorello/cards/${listId}`);
+                const response = await axios.get(`${BASE_URL}/dev/cards/${listId}`);
                 if(response.data.cards){
                     const param ={
                         listId:listId,
