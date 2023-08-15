@@ -2,6 +2,6 @@
 // eslint-disable-next-line no-undef
 const BASE_URL = process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
-    : 'https://vs950dudb3.execute-api.eu-central-1.amazonaws.com';
+    : 'https://tfv4i51273.execute-api.eu-central-1.amazonaws.com';
 
 export default BASE_URL;
