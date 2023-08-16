@@ -5,6 +5,7 @@
   "scripts": {
     "serve": " vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build-main":"cors-env NODE_ENV=main vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test": "jest --watch",
     "lint": "vue-cli-service lint"

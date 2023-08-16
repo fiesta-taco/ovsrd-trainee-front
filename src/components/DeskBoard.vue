@@ -57,8 +57,8 @@ export default {
         openModalCardDesk(card){
             this.$emit('open-modal-card', card);
         },
-        dragCard(options,movedCard){
-            this.$emit('drag-card',options,movedCard)
+        dragCard(movedCard){
+            this.$emit('drag-card',movedCard);
         },
     },
   

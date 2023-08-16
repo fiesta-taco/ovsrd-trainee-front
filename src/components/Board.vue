@@ -31,6 +31,9 @@
             @close-modal="closeModal"
             @update-card="updateCard"
         />
+        <Spinner 
+            :loading="isLoading"
+        />
         <div class="bottom-bar">
             <p> Produced by Ihor Bilash </p>
         </div>
@@ -41,6 +44,7 @@
 import CardModal from './CardModal.vue';
 import SwiperBoard from './SwiperBoard.vue';
 import DeskBoard from './DeskBoard.vue';
+import Spinner from './Spinner.vue';
 import {mapActions ,mapState}from 'vuex';
 
 export default {
@@ -49,6 +53,7 @@ export default {
         CardModal,
         SwiperBoard,
         DeskBoard,
+        Spinner,
     },
     provide(){
         return {
@@ -60,7 +65,7 @@ export default {
             useSwiper:false,
             isModalOpen: false,
             modalCard: null,
-            editing: false,
+            isLoading: false,
         };
     },
     computed:mapState({
@@ -70,13 +75,15 @@ export default {
         if(window.innerWidth < 676){
             this.useSwiper = true;
         }
-        this.getListsApi();
+        this.getLists();
         window.addEventListener('resize', this.handleResize);
     },
 
     methods: {
-        ...mapActions(['getListsApi','createListApi','updateListTitleApi',
-            'deleteListApi','createCardApi','updateCardApi','deleteCardApi','dragAndDropCardApi']),
+        ...mapActions([
+            'getListsApi','createListApi','updateListTitleApi','deleteListApi',
+            'createCardApi','updateCardApi','deleteCardApi','dragAndDropCardApi',
+        ]),
         handleResize() {
             if (window.innerWidth < 767) {
                 this.useSwiper = true;
@@ -84,8 +91,14 @@ export default {
                 this.useSwiper = false;
             }
         },
+        async getLists(){
+            this.isLoading = true;
+            await this.getListsApi();
+            this.isLoading = false;
+        },
         
-        addCardToList(listId, cardTitle) {
+        async addCardToList(listId, cardTitle) {
+            this.isLoading = true;
             const cardsLengthInThisList = this.getCardsLengthByList(listId);
             const newPosition = cardsLengthInThisList+1;
             const list = {
@@ -94,7 +107,8 @@ export default {
                 cardText:'',
                 position:newPosition,
             };
-            this.createCardApi(list);
+            await this.createCardApi(list);
+            this.isLoading = false;
         },
         getCardsLengthByList(listId){
             const list = this.lists.find(list=>list.listId===listId);
@@ -104,15 +118,19 @@ export default {
                 return 0;
             }
         },
-        addNewList() {
+        async addNewList() {
+            this.isLoading = true;
             const newList = {
                 position: this.lists.length + 1,
                 title: 'New List',
             };
-            this.createListApi(newList);
+            await this.createListApi(newList);
+            this.isLoading = false;
         },
-        updateListTitle(list) {
-            this.updateListTitleApi(list);
+        async updateListTitle(list) {
+            this.isLoading = true;
+            await this.updateListTitleApi(list);
+            this.isLoading = false;
         },
         openModalCard(currentCard) {
             const updatedlist = this.lists.find(list => list.listId === currentCard.listId);
@@ -124,20 +142,26 @@ export default {
             this.isModalOpen = false;
         },
         async updateCard(newCard) {
-            await this.updateCardApi(newCard);
+            this.isLoading = true;
             this.isModalOpen = false;
+            await this.updateCardApi(newCard);
+            this.isLoading = false;
+            
         },
         async deleteCard(card) {
+            this.isLoading = true;
             await this.deleteCardApi(card);
-            this.isModalOpen = false;
+            this.isLoading = false;
         },
-        deleteList(listId) {
-            this.deleteListApi(listId);
+        async deleteList(listId) {
+            this.isLoading = true;
+            await this.deleteListApi(listId);
+            this.isLoading = false;
         },
-        dragCard(options,movedCard){
-            
-            const data={}
-            this.dragAndDropCardApi(data);
+        async dragCard(movedCard){        
+            this.isLoading = true; 
+            await this.dragAndDropCardApi(movedCard);
+            this.isLoading = false;
         },
 
     },

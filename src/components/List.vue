@@ -19,12 +19,13 @@
         </div>
         <div class="card-box">
             <draggable 
-                v-model="localList" 
+                v-model="localCards" 
                 :move="dragAndDropCard" 
                 :options="draggableOptions"
+                @end="dropEnd"
             >
                 <Card 
-                    v-for="card in list.cards" 
+                    v-for="card in localCards" 
                     :key="card.cardId" 
                     :card="card" 
                     @open-modal-card="openModalCard"
@@ -71,33 +72,41 @@ export default {
     data() {
         return {
             newListTitle: this.list.title,
-            localList: this.list.cards,
+            localCards: this.list.cards,
             draggableOptions: {
                 group: 'lists', 
-                animation: 150, 
+                animation: 550, 
             },
+            drCard:null,
+            isLoading:false,
         };
     },
     watch: {
         'list.title': function(newTitle) {
             this.newListTitle = newTitle;
         },
+        'list.cards': function(newCards){//localCard to Crad added for instant transfer
+            this.localCards = newCards;
+        },
     },   
     methods: {
-        dragAndDropCard(event){
-            
-            const movedCard = event.draggedContext.element;
-            const options={
-                oldIndexArray : event.draggedContext.index,
-                oldListId : this.list.listId,
-                futureIndexArray: event.draggedContext.futureIndex,
-                toList : event.to.parentNode.parentNode.getAttribute('list-key'),
+        dragAndDropCard(event){        
+            const futureListId = event.to.parentNode.parentNode.getAttribute('list-key');
+            const futurePosition =event.draggedContext.futureIndex + 1;
+            const movedCard = {
+                listId: futureListId,
+                cardId: event.draggedContext.element.cardId,
+                title: event.draggedContext.element.title,
+                cardText: event.draggedContext.element.cardText,
+                position: futurePosition ,
             };
-          
+            this.drCard = movedCard;
+        },
+        dropEnd(){
+            const movedCard = this.drCard;
+            this.drCard = null;
+            this.$emit('drag-card',movedCard);
             
-
-            this.$emit('drag-card',options,movedCard);
-
         },
        
         addCard() {
