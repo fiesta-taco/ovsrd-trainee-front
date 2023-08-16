@@ -5,9 +5,9 @@ let BASE_URL = '';
 if(value === 'development'){
     BASE_URL = 'http://localhost:3000/dev';
 }else if(value === 'main'){
-    BASE_URL = 'https://esexqht4ce.execute-api.eu-central-1.amazonaws.com/main';
+    BASE_URL = 'https://qau5hxxl75.execute-api.eu-central-1.amazonaws.com/main';
 }else{
-    BASE_URL = 'https://esexqht4ce.execute-api.eu-central-1.amazonaws.com/dev';
+    BASE_URL = 'https://qau5hxxl75.execute-api.eu-central-1.amazonaws.com/dev';
 }
 
 
