@@ -19,19 +19,12 @@ let store = new Vuex.Store({
             let list = state.lists.find(list => list.listId === param.listId);
             list.cards = param.cardsByListId;
         },
-        /* CREATE_LIST (state, newList) {
-            state.lists.push(newList);
-        },*/
         UPDATE_LIST_TITLE (state, updatedList) {
             const list = state.lists.find(list => list.listId === updatedList.listId);
             if (list) {
                 list.title = updatedList.title;
             }
         },
-        /*CREATE_CARD(state,newCard){
-            const list = state.lists.find(list=>list.listId===newCard.listId);
-            list.cards.push(newCard);
-        },*/
         UPDATE_CARD(state,newCard){
             const list = state.lists.find(list=>list.listId===newCard.listId);
             let card = list.cards.find(card=>card.cardId===newCard.cardId);
@@ -43,7 +36,7 @@ let store = new Vuex.Store({
     actions: {
         async getListsApi({ commit }) {
             try {
-                const response = await axios.get(`${BASE_URL}/dev/lists`);
+                const response = await axios.get(`${BASE_URL}/lists`);
                 commit('SET_LISTS', response.data.lists);
             } catch (error) {
                 console.error(error);
@@ -51,7 +44,7 @@ let store = new Vuex.Store({
         },
         async createListApi({ dispatch }, newList) {
             try {
-                const response = await axios.post(`${BASE_URL}/dev/list`, newList);
+                const response = await axios.post(`${BASE_URL}/list`, newList);
                 if(response.data.list){
                     await dispatch('getListsApi');
                 }        
@@ -62,7 +55,7 @@ let store = new Vuex.Store({
 
         async updateListTitleApi({ commit }, list) {
             try {
-                const response = await axios.put(`${BASE_URL}/dev/list`, list);
+                const response = await axios.put(`${BASE_URL}/list`, list);
                 if(response.data.list){
                     commit('UPDATE_LIST_TITLE', response.data.list);
                 }
@@ -73,7 +66,7 @@ let store = new Vuex.Store({
 
         async deleteListApi({ dispatch }, listId) {
             try {
-                const response = await axios.delete(`${BASE_URL}/dev/list/${listId}`);
+                const response = await axios.delete(`${BASE_URL}/list/${listId}`);
                 if (response.data.ok) {       
                     await dispatch('getListsApi');
                 }
@@ -84,7 +77,7 @@ let store = new Vuex.Store({
 
         async createCardApi({dispatch},card){
             try {
-                const response = await axios.post(`${BASE_URL}/dev/card`, card);
+                const response = await axios.post(`${BASE_URL}/card`, card);
                 if(response.data.card){
                     await dispatch('getCardsByListId',response.data.card.listId);
                 }
@@ -94,7 +87,7 @@ let store = new Vuex.Store({
         },
         async updateCardApi({dispatch},card){
             try {
-                const response = await axios.put(`${BASE_URL}/dev/card`, card);
+                const response = await axios.put(`${BASE_URL}/card`, card);
                 if(response.data.card){
                     await dispatch('getCardsByListId',response.data.card.listId);
                 }
@@ -105,7 +98,7 @@ let store = new Vuex.Store({
         },
         async deleteCardApi({dispatch},card){
             try {
-                const response = await axios.delete(`${BASE_URL}/dev/card/${card.cardId}`);
+                const response = await axios.delete(`${BASE_URL}/card/${card.cardId}`);
                 if (response.data.ok) {       
                     await dispatch('getCardsByListId',card.listId);
                 }
@@ -115,7 +108,7 @@ let store = new Vuex.Store({
         },
         async getCardsByListId({commit},listId){
             try {
-                const response = await axios.get(`${BASE_URL}/dev/cards/${listId}`);
+                const response = await axios.get(`${BASE_URL}/cards/${listId}`);
                 if(response.data.cards){
                     const param ={
                         listId:listId,
@@ -128,8 +121,15 @@ let store = new Vuex.Store({
                 console.error(error);
             }
         },
-        dragAndDropCardApi({commit},data){
-
+        async dragAndDropCardApi({dispatch},movedCard){
+            try {
+                const response = await axios.post(`${BASE_URL}/drag-card`, movedCard);
+                if(response.data.card){
+                    await dispatch('getListsApi');
+                }        
+            } catch (error) {
+                console.error(error);
+            }
         },
     },
 
