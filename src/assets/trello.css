@@ -230,3 +230,18 @@ body {
   margin-top: 4px;
   transition: transform 0.2s ease;
 }
+
+.add-file{
+    display: inline-block;
+    color: white;
+    padding: 1px 1px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+    background-image: linear-gradient(to right, var(--board-background)0%, var(--header-background-color) 51%, var(--list-background) 100%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    height: auto;
+}

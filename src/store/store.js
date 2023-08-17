@@ -1,5 +1,5 @@
 import axios from 'axios';
-import BASE_URL from './base_url';
+import BASE_URL,{ IMAGE_BACKEND_URL } from './base_url';
 import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
@@ -126,6 +126,25 @@ let store = new Vuex.Store({
                 const response = await axios.post(`${BASE_URL}/drag-card`, movedCard);
                 if(response.data.card){
                     await dispatch('getListsApi');
+                }        
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async saveFileByCardApi({dispatch},{card,formData}){
+            try {
+                const response = await axios.post(`${IMAGE_BACKEND_URL}`, 
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    },
+                );
+                if(response.data.url){
+                    card.imageURL = response.data.url;
+                    await dispatch('updateCardApi',card);
+
                 }        
             } catch (error) {
                 console.error(error);

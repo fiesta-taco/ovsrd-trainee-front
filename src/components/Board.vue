@@ -30,6 +30,7 @@
             :card="modalCard"
             @close-modal="closeModal"
             @update-card="updateCard"
+            @save-file-by-card="saveFileByCard"
         />
         <Spinner 
             :loading="isLoading"
@@ -83,6 +84,7 @@ export default {
         ...mapActions([
             'getListsApi','createListApi','updateListTitleApi','deleteListApi',
             'createCardApi','updateCardApi','deleteCardApi','dragAndDropCardApi',
+            'saveFileByCardApi',
         ]),
         handleResize() {
             if (window.innerWidth < 767) {
@@ -101,13 +103,14 @@ export default {
             this.isLoading = true;
             const cardsLengthInThisList = this.getCardsLengthByList(listId);
             const newPosition = cardsLengthInThisList+1;
-            const list = {
+            const card = {
                 listId:listId,
                 title:cardTitle,
                 cardText:'',
                 position:newPosition,
+                imageURL:'',
             };
-            await this.createCardApi(list);
+            await this.createCardApi(card);
             this.isLoading = false;
         },
         getCardsLengthByList(listId){
@@ -161,6 +164,11 @@ export default {
         async dragCard(movedCard){        
             this.isLoading = true; 
             await this.dragAndDropCardApi(movedCard);
+            this.isLoading = false;
+        },
+        async saveFileByCard(card,formData){
+            this.isLoading = true; 
+            await this.saveFileByCardApi({card,formData});
             this.isLoading = false;
         },
 

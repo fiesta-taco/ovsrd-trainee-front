@@ -18,7 +18,7 @@ export default {
 };
 </script>
   
-  <style>
+  <style scoped>
   .spinner-overlay {
     position: absolute;
     top: 0;
