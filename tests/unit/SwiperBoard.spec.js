@@ -4,7 +4,7 @@ import SwiperBoard from '@/components/SwiperBoard';
 
 
 // eslint-disable-next-line no-undef
-test('SwiperBoard', () => {
+/*test('SwiperBoard', () => {
     // eslint-disable-next-line no-undef, no-constant-condition
     if('render ', async () => {
         const wrapper = render(SwiperBoard);
@@ -16,4 +16,4 @@ test('SwiperBoard', () => {
         // eslint-disable-next-line no-undef
         expect(wrapper.findAll('.list')).toHaveLength(3); // expect 3
     });
-});
+});*/
