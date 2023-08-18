@@ -28,18 +28,60 @@
                         {{ modalText }}
                     </div>
                 </div>
+                <div 
+                    v-if="isURL" 
+                    class="url-block"
+                >
+                    Card Image : 
+                    <a 
+                        :href="card.imageURL" 
+                        target="_blank"
+                    > 
+                        {{ card.imageURL }}
+                    </a>
+                </div>
                 <div class="tools">
-                    <div 
-                        class="reset-card-btn" 
-                        @click="resetModal" 
-                    >
-                        Reset
+                    <div>
+                        <div 
+                            v-if="!isOpenLoadFile"
+                            class="load-file-btn" 
+                            @click="isOpenLoadFile=true" 
+                        >
+                            Load File
+                        </div>
+                        <div 
+                            v-else 
+                            style="display: flex;"
+                        >
+                            <input 
+                                ref="imageInput"
+                                class="add-file" 
+                                type="file" 
+                                @change="uploadFile"
+                            >
+                            <div 
+                                v-if="isLoaded"
+                                class="load-file-btn" 
+                                @click="saveFileByCard" 
+                            >
+                                Save File
+                            </div>
+                        </div>
                     </div>
-                    <div 
-                        class="save-card-btn" 
-                        @click="updateCard" 
-                    >
-                        Save
+                    
+                    <div style="display: flex;">
+                        <div 
+                            class="reset-card-btn" 
+                            @click="resetModal" 
+                        >
+                            Reset
+                        </div>
+                        <div 
+                            class="save-card-btn" 
+                            @click="updateCard" 
+                        >   
+                            Save
+                        </div>
                     </div>
                 </div>
             </div>
@@ -63,9 +105,14 @@ export default {
         return {
             modalTitle: this.card.title,
             modalText: this.card.cardText,
+            isOpenLoadFile:false,
+            isLoaded:false,
+            file:'',
+            isURL:this.card.imageURL===''?false:true,
 
         };
     },
+    
     methods: {
         closeModal() {
             this.$emit('close-modal');
@@ -80,6 +127,7 @@ export default {
                     title: title,
                     cardText: text.trim(),
                     position:this.card.position,
+                    imageURL:this.card.imageURL,
                 };
                 this.$emit('update-card',newCard);
             }
@@ -89,6 +137,18 @@ export default {
                 this.$refs.cardTitle.textContent = this.card.title;
                 this.$refs.cardText.textContent = this.card.cardText;
             });
+        },
+        uploadFile(){
+            this.file = this.$refs.imageInput.files[0];
+            this.isLoaded = true;
+        },
+        saveFileByCard(){
+            let formData = new FormData();
+            formData.append('image',this.file);
+            this.$emit('save-file-by-card',this.card, formData);
+            this.closeModal();
+            this.isLoaded = false;
+            this.isOpenLoadFile=false;
         },
     },
 };
@@ -168,8 +228,10 @@ export default {
 .tools {
     /* background-color: #b8b5b8;*/
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     border-radius: 5px;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .fill-text-btn {
@@ -227,12 +289,24 @@ export default {
     display: block;
     cursor: pointer;
     width: 50px;
-    height: 24px;
     border-bottom-left-radius: 1px;
     border-bottom-right-radius: 1px;
     border-radius: 5px;
     margin: 12px;
     
+}
+
+.load-file-btn{
+    background-color: var(--btn-save);
+    position: relative;
+    display: block;
+    cursor: pointer;
+    width: 80px;
+    border-bottom-left-radius: 1px;
+    border-bottom-right-radius: 1px;
+    border-radius: 5px;
+    margin-top:12px ;
+    margin-bottom: 12px;
 }
 
 .reset-card-btn:hover {
@@ -245,11 +319,11 @@ export default {
     display: block;
     cursor: pointer;
     width: 50px;
-    height: 24px;
     border-bottom-left-radius: 1px;
     border-bottom-right-radius: 1px;
     border-radius: 5px;
-    margin: 12px;
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
 
 .save-card-btn:hover {
@@ -267,5 +341,16 @@ export default {
     font-size: 14px;
     line-height: 1.5;
 
+}
+.url-block{
+    display: flex;
+    width: 90%;
+    margin-left: 5%;
+    white-space: nowrap; 
+    overflow: hidden; 
+}
+.url-block:hover{
+    overflow: visible; 
+    text-overflow: clip; 
 }
 </style>

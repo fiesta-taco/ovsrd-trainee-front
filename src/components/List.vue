@@ -99,6 +99,7 @@ export default {
                 title: event.draggedContext.element.title,
                 cardText: event.draggedContext.element.cardText,
                 position: futurePosition ,
+                imageURL: event.draggedContext.element.imageURL||'',
             };
             this.drCard = movedCard;
         },
