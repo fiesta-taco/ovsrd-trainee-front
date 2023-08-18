@@ -133,7 +133,7 @@ let store = new Vuex.Store({
         },
         async saveFileByCardApi({dispatch},{card,formData}){
             try {
-                const response = await axios.post(`${IMAGE_BACKEND_URL}`, 
+                const response = await axios.post(`${IMAGE_BACKEND_URL}/image/upload`, 
                     formData,
                     {
                         headers: {

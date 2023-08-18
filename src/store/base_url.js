@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-undef
 const value = process.env.NODE_ENV;
 let BASE_URL = '';
-export const IMAGE_BACKEND_URL = 'http://localhost:3003/image/upload';
+export const IMAGE_BACKEND_URL = 'http://localhost:3003';
     
 if(value === 'development'){
     BASE_URL = 'http://localhost:3000/dev';

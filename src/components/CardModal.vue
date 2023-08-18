@@ -344,6 +344,13 @@ export default {
 }
 .url-block{
     display: flex;
+    width: 90%;
     margin-left: 5%;
+    white-space: nowrap; 
+    overflow: hidden; 
+}
+.url-block:hover{
+    overflow: visible; 
+    text-overflow: clip; 
 }
 </style>
