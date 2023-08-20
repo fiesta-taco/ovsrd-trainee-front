@@ -1,12 +1,13 @@
+//import { shallowMount } from '@vue/test-utils';
 import {render} from '@testing-library/vue';
-import Card from '@/components/Card';
+import Spinner from '@/components/Spinner';
 
 
 // eslint-disable-next-line no-undef
-test('Card', () => {
+test('Spinner', () => {
     // eslint-disable-next-line no-undef, no-constant-condition
-    if('render card', async () => {
-        const wrapper = render(Card);
+    if('render sipnner', async () => {
+        const wrapper = render(Spinner);
         // eslint-disable-next-line no-undef
         expect(wrapper.exists()).toBe(true);
 

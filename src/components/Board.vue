@@ -8,15 +8,18 @@
         <SwiperBoard 
             v-if="useSwiper"
             :lists="lists"
+            :mobile="true"
             @add-card="addCardToList"
             @update-list-title="updateListTitle"
             @delete-card="deleteCard"
             @delete-list="deleteList"
             @open-modal-card="openModalCard"  
+            @drag-card="dragCard"
         />
         <DeskBoard 
             v-else
             :lists="lists"
+            :mobile="false"
             @add-card="addCardToList"
             @update-list-title="updateListTitle"
             @delete-card="deleteCard"
@@ -27,6 +30,7 @@
         
         <CardModal
             v-if="isModalOpen"
+            :lists="lists" 
             :card="modalCard"
             @close-modal="closeModal"
             @update-card="updateCard"

@@ -1,6 +1,6 @@
 <template>
     <div  
-        :class="{'swiper-slide':mobile, 'list':!mobile}"
+        class="list"
     >
         <div class="title-block">
             <div>     
@@ -53,11 +53,13 @@
 import Card from './Card.vue';
 import draggable from 'vuedraggable';
 
+
 export default {
     name: 'ListV',
     components: {
         Card,
         draggable,
+     
     },
     props: {
         mobile:{
@@ -99,7 +101,6 @@ export default {
                 title: event.draggedContext.element.title,
                 cardText: event.draggedContext.element.cardText,
                 position: futurePosition ,
-                imageURL: event.draggedContext.element.imageURL||'',
             };
             this.drCard = movedCard;
         },
