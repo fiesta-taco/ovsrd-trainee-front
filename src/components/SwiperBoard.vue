@@ -1,44 +1,34 @@
 <template>
-    <div   
-        ref="swiper" 
-        class="swiper"
-    >
-        <div class="swiper-wrapper">
-            <List
-                v-for="list in lists"
-                :key="list.cardId"
-                :list="list"
-                :mobile="true"
-                @add-card="addCardToListFromSwiperBoard"
-                @update-list-title="updateListTitleSwiperBoard"
-                @delete-card="deleteCardSwiper"
-                @delete-list="deleteListSwiper"
-                @open-modal-card="openModalCardSwiper"
-            />   
-            <div class="swiper-slide">
-                <div
-                    class="add-list"
-                    @click="addNewList"
-                >
-                    + add list
-                </div>
-            </div>
+    <VueSlickCarousel 
+        v-bind="settings"
+        :key="lists.length"
+    >   
+        <List
+            v-for="list in lists"
+            :key="list.cardId"
+            :list="list"
+            :mobile="true"
+            @add-card="addCardToListFromSwiperBoard"
+            @update-list-title="updateListTitleSwiperBoard"
+            @delete-card="deleteCardSwiper"
+            @delete-list="deleteListSwiper"
+            @open-modal-card="openModalCardSwiper"
+            @drag-card="dragCard"
+        />  
+        <div
+            class="add-list"
+            @click="addNewList"
+        >
+            + add list
         </div>
-        <!-- If we need pagination -->
-        <div class="swiper-pagination" />
-        <!-- If we need navigation buttons -->
-        <div class="swiper-button-prev" />
-        <div class="swiper-button-next" />
-        <!-- If we need scrollbar -->
-        <div class="swiper-scrollbar" />
-    </div>
+    </VueSlickCarousel>
 </template>
 
 <script>
 import List from './List.vue';
-import Swiper from 'swiper/bundle'; 
-
-import 'swiper/swiper-bundle.css';
+import VueSlickCarousel from 'vue-slick-carousel';
+import 'vue-slick-carousel/dist/vue-slick-carousel.css';
+import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
 
 
         
@@ -46,6 +36,8 @@ export default {
     name: 'SwiperBoard',
     components: {
         List,
+        VueSlickCarousel,
+  
     },
     inject:['addNewList'],
     props:{
@@ -63,33 +55,19 @@ export default {
             modalListId: '',
             editing: false,
             newListTitle: '',
+            settings:{
+                edgeFriction: 0.35,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                speed: 1000,
+                dots: true,
+            },
         };
-    },
-    mounted(){
-        this.initSwiper();
-    },
-    beforeDestroy() {
-        this.swiper.destroy();
-       
     },
 
     methods: {
-        initSwiper() {
-            this.swiper =  new Swiper(this.$refs.swiper, {
-                loop: true,
-                autoHeight: true,
-                zoom: true,
-                keyboard: { enabled: true },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-            });
-        },
+    
+       
         addCardToListFromSwiperBoard(listId,titleCard){
             this.$emit('add-card', listId, titleCard);
         },
@@ -104,6 +82,9 @@ export default {
         },
         openModalCardSwiper(card){
             this.$emit('open-modal-card', card);
+        },
+        dragCard(movedCard){
+            this.$emit('drag-card',movedCard);
         },
 
     },

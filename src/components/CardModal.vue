@@ -32,7 +32,7 @@
                     v-if="isURL" 
                     class="url-block"
                 >
-                    Card Image : 
+                    URL : 
                     <a 
                         :href="card.imageURL" 
                         target="_blank"

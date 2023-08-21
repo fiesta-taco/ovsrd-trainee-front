@@ -34,7 +34,6 @@ export default {
             default:()=>({}),
         },
     },
-
     methods: {
         openModalCard() {
             this.$emit('open-modal-card', this.card);

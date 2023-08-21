@@ -1,14 +1,14 @@
+
 import {render} from '@testing-library/vue';
-import Card from '@/components/Card';
+import CardModal from '@/components/CardModal';
 
 
 // eslint-disable-next-line no-undef
-test('Card', () => {
+test('CardModal', () => {
     // eslint-disable-next-line no-undef, no-constant-condition
-    if('render card', async () => {
-        const wrapper = render(Card);
+    if('render modal', async () => {
+        const wrapper = render(CardModal);
         // eslint-disable-next-line no-undef
         expect(wrapper.exists()).toBe(true);
-
     });
 });
