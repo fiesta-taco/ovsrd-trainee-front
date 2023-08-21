@@ -141,13 +141,13 @@ let store = new Vuex.Store({
                         },
                     },
                 );
-                if(response.data.url){
+                if(response.data.url!==undefined){
                     card.imageURL = response.data.url;
                     await dispatch('updateCardApi',card);
-
-                }        
+                }          
             } catch (error) {
                 console.error(error);
+                alert('Image server is not working');
             }
         },
     },
