@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-undef
 const value = process.env.NODE_ENV;
 let BASE_URL = '';
-export const IMAGE_BACKEND_URL = 'https://ServiceLBE9A1ADBC-N7f7RsvupFKZ-1466839129.eu-central-1.elb.amazonaws.com';
+export const IMAGE_BACKEND_URL = 'https://servicelbe9a1adbc-n7f7rsvupfkz-1466839129.eu-central-1.elb.amazonaws.com/';
     
 if(value === 'development'){
     BASE_URL = 'http://localhost:3000/dev';
