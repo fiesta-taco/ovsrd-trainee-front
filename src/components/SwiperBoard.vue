@@ -7,6 +7,7 @@
             v-for="list in lists"
             :key="list.cardId"
             :list="list"
+            :list-key="list.listId"
             :mobile="true"
             @add-card="addCardToListFromSwiperBoard"
             @update-list-title="updateListTitleSwiperBoard"
