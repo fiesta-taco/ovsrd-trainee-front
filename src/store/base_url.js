@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-undef
 const value = process.env.NODE_ENV;
 let BASE_URL = '';
-export const IMAGE_BACKEND_URL = 'http://ServiceLBE9A1ADBC-N7f7RsvupFKZ-1466839129.eu-central-1.elb.amazonaws.com';
+export const IMAGE_BACKEND_URL = 'https://bilash-docker-api-dev.kozub.dev';
     
 if(value === 'development'){
     BASE_URL = 'http://localhost:3000/dev';
