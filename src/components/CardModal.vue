@@ -28,29 +28,24 @@
                         {{ modalText }}
                     </div>
                 </div>
-                <div 
-                    v-if="isURL" 
-                    class="url-block"
-                >
-                    URL : 
-                    <a 
-                        :href="card.imageURL" 
-                        target="_blank"
-                    > 
-                        {{ card.imageURL }}
-                    </a>
-                </div>
                 <div class="tools">
-                    <div>
+                    <div style="display: flex;">
                         <div 
                             v-if="!isOpenLoadFile"
                             class="load-file-btn" 
-                            @click="isOpenLoadFile=true" 
+                            @click="openLoadBtnAndCloseOpenBtn" 
                         >
-                            Load File
+                            Upload File
                         </div>
                         <div 
-                            v-else 
+                            v-if="showOpenImage" 
+                            class="open-image-btn" 
+                            @click="openImageByS3Key"
+                        >
+                            Open File
+                        </div>
+                        <div 
+                            v-if="isOpenLoadFile" 
                             style="display: flex;"
                         >
                             <input 
@@ -65,7 +60,7 @@
                                 @click="saveFileByCard" 
                             >
                                 Save File
-                            </div>
+                            </div>   
                         </div>
                     </div>
                     
@@ -90,7 +85,7 @@
 </template>
   
 <script>
-
+import AWS from 'aws-sdk';
 
 export default {
 
@@ -108,9 +103,12 @@ export default {
             isOpenLoadFile:false,
             isLoaded:false,
             file:'',
-            isURL:this.card.imageURL===''?false:true,
-
+            isURL:this.card.s3Key===''?false:true,
+            showOpenImage:false,
         };
+    },
+    mounted(){
+        this.changeUrlStatus();
     },
     
     methods: {
@@ -127,26 +125,51 @@ export default {
                     title: title,
                     cardText: text.trim(),
                     position:this.card.position,
-                    imageURL:this.card.imageURL,
+                    s3Key:this.card.s3Key,
                 };
                 this.$emit('update-card',newCard);
             }
+        },
+        async openImageByS3Key(){
+            const s3 = new AWS.S3();
+            const param = {
+                Bucket: 'lyakov-s3-docker-dev-qefh312u',
+                Key: this.card.s3Key,
+                Expires: 60*60,
+            };
+            const url = await s3.getSignedUrl('getObject', param);
+            window.open(url, '_blank');
         },
         resetModal(){
             this.$nextTick(() => {
                 this.$refs.cardTitle.textContent = this.card.title;
                 this.$refs.cardText.textContent = this.card.cardText;
             });
+            this.isOpenLoadFile = false;
+            this.file='';
+            this.isLoaded=false;
+            this.changeUrlStatus();
+        },
+        openLoadBtnAndCloseOpenBtn(){
+            this.isOpenLoadFile = true;
+            this.showOpenImage =false;
+        },
+        changeUrlStatus(){
+            if(!this.isLoaded&&this.isURL){
+                this.showOpenImage = true;
+            }else{
+                this.showOpenImage = false;
+            }
         },
         uploadFile(){
             this.file = this.$refs.imageInput.files[0];
             this.isLoaded = true;
+
         },
         saveFileByCard(){
-            let formData = new FormData();
-            formData.append('image',this.file);
-            this.$emit('save-file-by-card',this.card, formData);
+            this.$emit('save-file-by-card',this.card, this.file);
             this.closeModal();
+            this.isOpenLoadFile = false;
             this.isLoaded = false;
             this.isOpenLoadFile=false;
         },
@@ -155,7 +178,6 @@ export default {
 </script>
   
 <style scoped>
-@import url(../assets/variable.css);
 
 .modal {
     position: absolute;
@@ -267,21 +289,6 @@ export default {
     transform: scale(1.05);
 }
 
-.edit-text-btn {
-    background-image: url("../assets/pen.svg");
-    position: relative;
-    display: block;
-    width: 24px;
-    height: 24px;
-    border-bottom-left-radius: 1px;
-    border-bottom-right-radius: 1px;
-    margin-top: 4px;
-    transition: transform 0.2s ease;
-}
-
-.edit-text-btn:hover {
-    transform: scale(1.08);
-}
 
 .reset-card-btn {
     background-color: var(--btn-save);
@@ -292,8 +299,10 @@ export default {
     border-bottom-left-radius: 1px;
     border-bottom-right-radius: 1px;
     border-radius: 5px;
-    margin: 12px;
-    
+    margin: 12px;  
+}
+.reset-card-btn:hover {
+    background-color: var(--btn-save-hover);
 }
 
 .load-file-btn{
@@ -309,7 +318,7 @@ export default {
     margin-bottom: 12px;
 }
 
-.reset-card-btn:hover {
+.load-file-btn:hover {
     background-color: var(--btn-save-hover);
 }
 
@@ -319,6 +328,7 @@ export default {
     display: block;
     cursor: pointer;
     width: 50px;
+    height: 25px;
     border-bottom-left-radius: 1px;
     border-bottom-right-radius: 1px;
     border-radius: 5px;
@@ -329,7 +339,20 @@ export default {
 .save-card-btn:hover {
     background-color: var(--btn-save-hover);
 }
-
+.open-image-btn{
+    background-color: var(--btn-save);
+    position: relative;
+    display: block;
+    cursor: pointer;
+    width: 80px;
+    border-bottom-left-radius: 1px;
+    border-bottom-right-radius: 1px;
+    border-radius: 5px;
+    margin:12px
+}
+.open-image-btn:hover {
+    background-color: var(--btn-save-hover);
+}
 .input-in-module {
     width: 100%;
     min-height: 120px;
@@ -342,15 +365,20 @@ export default {
     line-height: 1.5;
 
 }
-.url-block{
-    display: flex;
-    width: 90%;
-    margin-left: 5%;
-    white-space: nowrap; 
-    overflow: hidden; 
-}
-.url-block:hover{
-    overflow: visible; 
-    text-overflow: clip; 
+
+
+.add-file{
+    display: inline-block;
+    color: white;
+    padding: 1px 1px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+    background-image: linear-gradient(to right, var(--board-background)0%, var(--header-background-color) 51%, var(--list-background) 100%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    height: auto;
 }
 </style>

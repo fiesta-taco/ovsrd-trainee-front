@@ -65,4 +65,14 @@ export default {
 };
 
 </script>
-<style src="../assets/trello.css"></style>
+<style scoped>
+.board {
+  height: 80%;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  background-color: var(--board-background);
+  max-width: 100%;
+}
+
+</style>

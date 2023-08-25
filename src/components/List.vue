@@ -101,7 +101,7 @@ export default {
                 title: event.draggedContext.element.title,
                 cardText: event.draggedContext.element.cardText,
                 position: futurePosition ,
-                imageURL: event.draggedContext.element.imageURL,
+                s3Key: event.draggedContext.element.s3Key,
             };
             this.drCard = movedCard;
         },
@@ -140,5 +140,84 @@ export default {
 };
 
 </script>
-<style src="../assets/trello.css">
+<style scoped>
+
+.title-block {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--title-block-border-bottom);
+}
+
+.list {
+  margin-top: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 10px;
+  border: 1px solid var(--list-border);
+  border-radius: 10px;
+  min-width: 250px;
+  border-color: var(--list-border-color);
+  height: min-content;
+  box-sizing: border-box;
+  background: var(--list-background);
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-list-title{
+  background: #0000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    color: var(--list-title-color);
+    cursor: pointer;
+    position: relative;
+    display: block;
+    height: 18px;
+    border-bottom-left-radius: 1px;
+    border-bottom-right-radius: 1px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    border-style: none;
+    font-size: 16px;
+}
+
+.card-box {
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow-y: auto;
+  box-shadow: var(--ds-shadow-raised, 0 1px 1px #091e4240, 0 0 1px #091e424f);
+  padding: 1px 4px 0;
+  background-color: var(--card-box-background-color);
+}
+::-webkit-scrollbar {
+  background-color: var(--scrollbar-background-color);
+  border-radius: 20px;
+  border: 4px solid var(--scrollbar-border);
+  width: 10px;
+  -webkit-transform: translateZ(0);
+}
+
+.add-card {
+  margin: 5px 0;
+  padding: 1px;
+  background-color: var(--add-card-background-color);
+  border-radius: 3px;
+  position: relative;
+  color: var(--list-text-color);
+  display: flex;
+  cursor: pointer;
+  flex: 1 0 auto;
+  transition: transform 0.2s ease;
+}
+.add-card:hover {
+  transform: scale(1.04);
+}
+
+.addcard-text {
+  font-family: Arial, Helvetica, sans-serif;
+  margin-left: 20px;
+  color: var(--add-card-text);
+}
+
 </style>

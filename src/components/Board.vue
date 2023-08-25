@@ -112,7 +112,7 @@ export default {
                 title:cardTitle,
                 cardText:'',
                 position:newPosition,
-                imageURL:'',
+                s3Key:'',
             };
             await this.createCardApi(card);
             this.isLoading = false;
@@ -170,9 +170,9 @@ export default {
             await this.dragAndDropCardApi(movedCard);
             this.isLoading = false;
         },
-        async saveFileByCard(card,formData){
+        async saveFileByCard(card,file){
             this.isLoading = true; 
-            await this.saveFileByCardApi({card,formData});
+            await this.saveFileByCardApi({card,file});
             this.isLoading = false;
         },
 
@@ -180,4 +180,30 @@ export default {
 };
 
 </script>
-<style src="../assets/trello.css"></style>
+<style scoped>
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5%;
+  background-color: var(--bottom-bar-background);
+  text-align: center;
+  border-top: 1px solid var(--bottom-bar-border-top);
+
+}
+.main {
+  height: 100vh;
+}
+
+.headline {
+  height: 10%;
+  min-width: 98%;
+  background-color: var(--header-background-color);
+  text-align: center;
+  color: var(--header-color);
+  border: ridge;
+  font-family: Helvetica, sans-serif, Arial;
+}
+
+</style>

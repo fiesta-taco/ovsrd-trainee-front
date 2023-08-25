@@ -92,4 +92,6 @@ export default {
 };
 
 </script>
-<style src="../assets/trello.css"></style>
+<style>
+
+</style>
