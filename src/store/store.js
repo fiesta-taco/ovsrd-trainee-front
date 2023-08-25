@@ -132,6 +132,16 @@ let store = new Vuex.Store({
                 console.error(error);
             }
         },
+        async dragAndDropListApi({dispatch},movedList){
+            try {
+                const response = await axios.post(`${BASE_URL}/drag-list`, movedList);
+                if (response.data.list) {
+                    await dispatch('getListsApi');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        },
         async saveFileByCardApi({commit, dispatch }, { card, file }) {
             try {
                 const fileName = file.name.split('.')[0];

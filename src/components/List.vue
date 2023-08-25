@@ -37,11 +37,11 @@
             class="add-card"
             @click="addCard"
         >
-            <div class="addcard-text">
+            <div class="add-card-text">
                 +
             </div>
             <div 
-                class="addcard-text"
+                class="add-card-text"
             >
                 Add Card
             </div>
@@ -76,8 +76,8 @@ export default {
             newListTitle: this.list.title,
             localCards: this.list.cards,
             draggableOptions: {
-                group: 'lists', 
-                animation: 550, 
+                group: 'cards', 
+                animation: 250, 
             },
             drCard:null,
             isLoading:false,
@@ -152,23 +152,22 @@ export default {
   margin-top: 15px;
   margin-left: 5px;
   margin-right: 5px;
-  padding: 10px;
-  border: 1px solid var(--list-border);
-  border-radius: 10px;
+  padding: 6px;
+ /* box-shadow: var(#ccc,0 1px 1px #091e4240,0 0 1px #091e424f);*/
+  border-radius: 5px;
   min-width: 250px;
-  border-color: var(--list-border-color);
   height: min-content;
   box-sizing: border-box;
   background: var(--list-background);
-  max-height: 90%;
+  max-height: 95%;
   display: flex;
   flex-direction: column;
 }
 
 .input-list-title{
   background: #0000;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 500;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 600;
     color: var(--list-title-color);
     cursor: pointer;
     position: relative;
@@ -186,36 +185,31 @@ export default {
   flex-grow: 1;
   flex-shrink: 1;
   overflow-y: auto;
-  box-shadow: var(--ds-shadow-raised, 0 1px 1px #091e4240, 0 0 1px #091e424f);
-  padding: 1px 4px 0;
-  background-color: var(--card-box-background-color);
 }
 ::-webkit-scrollbar {
   background-color: var(--scrollbar-background-color);
   border-radius: 20px;
-  border: 4px solid var(--scrollbar-border);
+  border: 5px solid var(--scrollbar-border);
   width: 10px;
   -webkit-transform: translateZ(0);
 }
 
 .add-card {
-  margin: 5px 0;
-  padding: 1px;
+  margin-top: 4px;
   background-color: var(--add-card-background-color);
   border-radius: 3px;
   position: relative;
-  color: var(--list-text-color);
   display: flex;
   cursor: pointer;
   flex: 1 0 auto;
   transition: transform 0.2s ease;
 }
 .add-card:hover {
-  transform: scale(1.04);
+ background-color:  var(--add-card-background-color-hover);
 }
 
-.addcard-text {
-  font-family: Arial, Helvetica, sans-serif;
+.add-card-text {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   margin-left: 20px;
   color: var(--add-card-text);
 }

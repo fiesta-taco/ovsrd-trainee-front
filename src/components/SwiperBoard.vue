@@ -57,7 +57,7 @@ export default {
             editing: false,
             newListTitle: '',
             settings:{
-                edgeFriction: 0.35,
+                edgeFriction: 0.36,
                 slidesToShow: 1,
                 slidesToScroll: 1,
                 speed: 1000,
@@ -93,5 +93,24 @@ export default {
 
 </script>
 <style>
-
+.slick-dots {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.slick-dots li {
+    margin: 0 5px;
+}
+.slick-dots li.slick-active button {
+    background-color:  var(--header-background-color);
+    border-radius: 5px;
+}
+.slick-slide {
+    padding: 0 10px; 
+}
 </style>

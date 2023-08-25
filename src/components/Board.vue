@@ -2,7 +2,7 @@
 <template>
     <div class="main">
         <div class="headline">
-            <h1> Igorello</h1>
+            Igorello
         </div>
         
         <SwiperBoard 
@@ -25,7 +25,8 @@
             @delete-card="deleteCard"
             @delete-list="deleteList"
             @open-modal-card="openModalCard"  
-            @drag-card="dragCard"           
+            @drag-card="dragCard"    
+            @drag-list="dragList"       
         />
         
         <CardModal
@@ -40,7 +41,7 @@
             :loading="isLoading"
         />
         <div class="bottom-bar">
-            <p> Produced by Ihor Bilash </p>
+            Produced by Ihor Bilash
         </div>
     </div>
 </template>
@@ -88,7 +89,7 @@ export default {
         ...mapActions([
             'getListsApi','createListApi','updateListTitleApi','deleteListApi',
             'createCardApi','updateCardApi','deleteCardApi','dragAndDropCardApi',
-            'saveFileByCardApi',
+            'saveFileByCardApi', 'dragAndDropListApi',
         ]),
         handleResize() {
             if (window.innerWidth < 767) {
@@ -170,6 +171,11 @@ export default {
             await this.dragAndDropCardApi(movedCard);
             this.isLoading = false;
         },
+        async dragList(movedList){
+            this.isLoading = true; 
+            await this.dragAndDropListApi(movedList);
+            this.isLoading = false;
+        },
         async saveFileByCard(card,file){
             this.isLoading = true; 
             await this.saveFileByCardApi({card,file});
@@ -180,6 +186,7 @@ export default {
 };
 
 </script>
+
 <style scoped>
 .bottom-bar {
   position: fixed;
@@ -187,23 +194,22 @@ export default {
   left: 0;
   width: 100%;
   height: 5%;
+  color:var(--bottom-bar-color);
   background-color: var(--bottom-bar-background);
   text-align: center;
-  border-top: 1px solid var(--bottom-bar-border-top);
+  padding: 5px;
 
 }
-.main {
-  height: 100vh;
-}
-
 .headline {
-  height: 10%;
-  min-width: 98%;
+  height: 60px;
   background-color: var(--header-background-color);
   text-align: center;
   color: var(--header-color);
-  border: ridge;
-  font-family: Helvetica, sans-serif, Arial;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  border-style: none;
+  font-size: 35px;
+  padding: 5px;
 }
 
 </style>
+
