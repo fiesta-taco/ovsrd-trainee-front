@@ -56,7 +56,7 @@
                             >
                             <div 
                                 v-if="isLoaded"
-                                class="load-file-btn" 
+                                class="save-file-btn" 
                                 @click="saveFileByCard" 
                             >
                                 Save File
@@ -199,7 +199,7 @@ export default {
     padding: 10px;
     width: 30%;
     max-height: 70%;
-    min-width: 350px;
+    min-width: 300px;
     min-height: 220px;
     text-align: center;
     display: flex;
@@ -219,13 +219,18 @@ export default {
     font-weight: 600;
     position: relative;
     border-style: none;
-    font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 150%;
     text-align: left;
     color: var(--card-modal-title-color);
-    margin: 5%;
-    border-bottom: 1px solid var(--card-modal-title-border-bottom);
+    margin-left: 5%;
+    margin-top: 3px;
+    margin-bottom: 15px;
+    /*border-bottom: 1px solid var(--card-modal-title-border-bottom);*/
+    max-width: 230px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .main-text-tools {
@@ -238,7 +243,7 @@ export default {
     width: 90%;
     border-radius: 5px;
     background-color: var(--main-text-modal-background-color);
-    padding: 8px;
+    /*padding: 8px;*/
     white-space: pre-wrap;
     overflow-wrap: break-word;
     font-size: 14px;
@@ -251,7 +256,6 @@ export default {
     /* background-color: #b8b5b8;*/
     display: flex;
     justify-content: space-between;
-    border-radius: 5px;
     margin-left: 5%;
     margin-right: 5%;
 }
@@ -295,11 +299,13 @@ export default {
     position: relative;
     display: block;
     cursor: pointer;
-    width: 50px;
-    border-bottom-left-radius: 1px;
-    border-bottom-right-radius: 1px;
+    width: 48px;
+   padding-left:4px;
+    padding-right: 4px;
     border-radius: 5px;
-    margin: 12px;  
+    margin-top: 18px;  
+    margin-bottom: 6px;
+    margin-right: 5px;
 }
 .reset-card-btn:hover {
     background-color: var(--btn-save-hover);
@@ -310,12 +316,28 @@ export default {
     position: relative;
     display: block;
     cursor: pointer;
-    width: 80px;
+    width: 88px;
+    padding-left:4px;
+    padding-right: 4px;
     border-bottom-left-radius: 1px;
     border-bottom-right-radius: 1px;
     border-radius: 5px;
-    margin-top:12px ;
-    margin-bottom: 12px;
+    margin-top:18px ;
+    margin-bottom: 6px;
+}
+.save-file-btn{
+    background-color: var(--btn-save);
+    position: relative;
+    display: block;
+    cursor: pointer;
+    width: 70px;
+    padding-left:4px;
+    padding-right: 4px;
+    border-bottom-left-radius: 1px;
+    border-bottom-right-radius: 1px;
+    border-radius: 5px;
+    margin-top:18px ;
+    margin-bottom: 6px;
 }
 
 .load-file-btn:hover {
@@ -327,13 +349,12 @@ export default {
     position: relative;
     display: block;
     cursor: pointer;
-    width: 50px;
-    height: 25px;
-    border-bottom-left-radius: 1px;
-    border-bottom-right-radius: 1px;
+    width: 48px;
+    padding-left:4px;
+    padding-right: 4px;
     border-radius: 5px;
-    margin-top: 12px;
-    margin-bottom: 12px;
+    margin-top: 18px;
+    margin-bottom: 6px;
 }
 
 .save-card-btn:hover {
@@ -345,6 +366,8 @@ export default {
     display: block;
     cursor: pointer;
     width: 80px;
+    padding-left:4px;
+    padding-right: 4px;
     border-bottom-left-radius: 1px;
     border-bottom-right-radius: 1px;
     border-radius: 5px;
@@ -357,8 +380,8 @@ export default {
     width: 100%;
     min-height: 120px;
     border-radius: 5px;
-    background-color: #b8b5b882;
-    padding: 8px;
+    /*background-color: #b8b5b882;*/
+    /*padding: 8px;*/
     white-space: pre-wrap;
     overflow-wrap: break-word;
     font-size: 14px;
@@ -371,14 +394,14 @@ export default {
     display: inline-block;
     color: white;
     padding: 1px 1px;
-    margin-top: 12px;
-    margin-bottom: 12px;
+    margin-top: 18px;
+    margin-bottom: 6px;
     border-radius: 5px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: small;
     background-image: linear-gradient(to right, var(--board-background)0%, var(--header-background-color) 51%, var(--list-background) 100%);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    width: 60%;
+    width: 150px;
     height: auto;
 }
 </style>

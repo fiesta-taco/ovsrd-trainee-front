@@ -3,6 +3,7 @@
 
 .main {
   height: 100vh;
+  background-color: slategray;
 }
 body {
   overflow: hidden;

@@ -95,7 +95,7 @@ export default {
 <style>
 .slick-dots {
     position: absolute;
-    bottom: 20px;
+    /*bottom: 20px;*/
     width: 100%;
     display: flex;
     justify-content: center;
@@ -110,7 +110,11 @@ export default {
     background-color:  var(--header-background-color);
     border-radius: 5px;
 }
+.slick-track{
+    background-color: slategray;
+}
 .slick-slide {
     padding: 0 10px; 
 }
+
 </style>
