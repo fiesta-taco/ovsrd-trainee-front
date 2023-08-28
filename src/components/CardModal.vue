@@ -28,6 +28,26 @@
                         {{ modalText }}
                     </div>
                 </div>
+                <div class="upload-tools">
+                    <div 
+                        v-if="isOpenLoadFile" 
+                        style="display: flex;"
+                    >
+                        <input 
+                            ref="imageInput"
+                            class="add-file" 
+                            type="file" 
+                            @change="uploadFile"
+                        >  
+                    </div>
+                    <div 
+                        v-if="isLoaded"
+                        class="save-file-btn" 
+                        @click="saveFileByCard" 
+                    >
+                        Save File
+                    </div> 
+                </div>
                 <div class="tools">
                     <div style="display: flex;">
                         <div 
@@ -43,25 +63,7 @@
                             @click="openImageByS3Key"
                         >
                             Open File
-                        </div>
-                        <div 
-                            v-if="isOpenLoadFile" 
-                            style="display: flex;"
-                        >
-                            <input 
-                                ref="imageInput"
-                                class="add-file" 
-                                type="file" 
-                                @change="uploadFile"
-                            >
-                            <div 
-                                v-if="isLoaded"
-                                class="save-file-btn" 
-                                @click="saveFileByCard" 
-                            >
-                                Save File
-                            </div>   
-                        </div>
+                        </div>  
                     </div>
                     
                     <div style="display: flex;">
@@ -85,7 +87,7 @@
 </template>
   
 <script>
-import AWS from 'aws-sdk';
+import s3,{ getObjectParam } from '@/config/aws.config';
 
 export default {
 
@@ -131,14 +133,15 @@ export default {
             }
         },
         async openImageByS3Key(){
-            const s3 = new AWS.S3();
-            const param = {
-                Bucket: 'lyakov-s3-docker-dev-qefh312u',
-                Key: this.card.s3Key,
-                Expires: 60*60,
-            };
-            const url = await s3.getSignedUrl('getObject', param);
-            window.open(url, '_blank');
+            try{
+                console.log('set param key==>>',getObjectParam.Key,'    ->',this.card.s3Key);
+                getObjectParam.Key = this.card.s3Key;
+                const url = await s3.getSignedUrlPromise('getObject',getObjectParam);
+                window.open(url, '_blank');
+            }catch(error){
+                console.error(error);
+            }
+            
         },
         resetModal(){
             this.$nextTick(() => {
@@ -253,7 +256,6 @@ export default {
 }
 
 .tools {
-    /* background-color: #b8b5b8;*/
     display: flex;
     justify-content: space-between;
     margin-left: 5%;
@@ -299,8 +301,7 @@ export default {
     position: relative;
     display: block;
     cursor: pointer;
-    width: 48px;
-   padding-left:4px;
+    padding-left:4px;
     padding-right: 4px;
     border-radius: 5px;
     margin-top: 18px;  
@@ -316,21 +317,18 @@ export default {
     position: relative;
     display: block;
     cursor: pointer;
-    width: 88px;
     padding-left:4px;
     padding-right: 4px;
-    border-bottom-left-radius: 1px;
-    border-bottom-right-radius: 1px;
     border-radius: 5px;
     margin-top:18px ;
     margin-bottom: 6px;
+    margin-right: 5px;
 }
 .save-file-btn{
     background-color: var(--btn-save);
     position: relative;
     display: block;
     cursor: pointer;
-    width: 70px;
     padding-left:4px;
     padding-right: 4px;
     border-bottom-left-radius: 1px;
@@ -349,7 +347,6 @@ export default {
     position: relative;
     display: block;
     cursor: pointer;
-    width: 48px;
     padding-left:4px;
     padding-right: 4px;
     border-radius: 5px;
@@ -365,13 +362,12 @@ export default {
     position: relative;
     display: block;
     cursor: pointer;
-    width: 80px;
     padding-left:4px;
     padding-right: 4px;
-    border-bottom-left-radius: 1px;
-    border-bottom-right-radius: 1px;
     border-radius: 5px;
-    margin:12px
+    margin-top: 18px;
+    margin-bottom:6px;
+    margin-right: 5px;
 }
 .open-image-btn:hover {
     background-color: var(--btn-save-hover);
@@ -380,8 +376,6 @@ export default {
     width: 100%;
     min-height: 120px;
     border-radius: 5px;
-    /*background-color: #b8b5b882;*/
-    /*padding: 8px;*/
     white-space: pre-wrap;
     overflow-wrap: break-word;
     font-size: 14px;
@@ -401,7 +395,13 @@ export default {
     font-size: small;
     background-image: linear-gradient(to right, var(--board-background)0%, var(--header-background-color) 51%, var(--list-background) 100%);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    width: 150px;
+    width: 200px;
     height: auto;
+}
+.upload-tools{
+    display: flex;
+    justify-content: space-between;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 </style>

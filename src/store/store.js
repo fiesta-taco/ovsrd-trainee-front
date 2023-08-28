@@ -144,17 +144,20 @@ let store = new Vuex.Store({
         },
         async saveFileByCardApi({commit, dispatch }, { card, file }) {
             try {
-                const fileName = file.name.split('.')[0];
+                //const formData =new FormData();
+                const fileName = file.name; //.split('.')[0];
                 const filename_key = `${card.cardId}_${fileName}`;
                 const response = await axios.post(`${IMAGE_BACKEND_URL}/image/upload`,{ fileKey:filename_key});
                 const url = response.data.url;
                 if (url !== undefined) {
-             
+                    await axios.put(`${url}`,
+                        file, {
+                            headers:{
+                                'Content-Type': 'image/*',
+                            },
+                        });
                     card.s3Key = filename_key;
-
                     await dispatch('updateCardApi', card);
-
-                    await axios.put(`${url}`, file);
                 }
             } catch (error) {
                 console.error(error);
