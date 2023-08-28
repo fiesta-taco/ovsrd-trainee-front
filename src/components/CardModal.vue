@@ -134,7 +134,6 @@ export default {
         },
         async openImageByS3Key(){
             try{
-                console.log('set param key==>>',getObjectParam.Key,'    ->',this.card.s3Key);
                 getObjectParam.Key = this.card.s3Key;
                 const url = await s3.getSignedUrlPromise('getObject',getObjectParam);
                 window.open(url, '_blank');
