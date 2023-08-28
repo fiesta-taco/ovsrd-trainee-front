@@ -1,45 +1,48 @@
 :root{
---header-background-color:#673a81;
---header-color:#f7f6f6;
---bottom-bar-background:#f7f6f6;
+--header-background-color:hsl(27,6.8%,21.1%);
+--header-color:#ffffff;
+--bottom-bar-background:hsl(27,6.8%,21.1%);
+--bottom-bar-color:#ccc;
 --bottom-bar-border-top:#a7adb8;
 
---board-background:rgb(242 241 225 / 31%);
+--board-background:slategray;
 
 --title-block-border-bottom:#b8b5b8;
 
 --list-border: rgb(242 241 225);
---list-background: #f5f2f2 ;
+--list-background: #f1f2f4 ;
 --list-border-color: #bdbdbd;
 
 --list-title-color:#673a81b8;
 
 --card-box-background-color:#f7f6f6;
 
---scrollbar-background-color:#b68ad096;
+--scrollbar-background-color:#d9d5cd;
 --scrollbar-border:#d9d5cd;
 
 --card-title-color:#7c7c7c;
 
 --card-text-color:cadetblue;
 
---card-background-color:#fafafa;
+--card-background-color:#fdfdfe;
+--card-background-color-hover:#ccc;
 --card-color:#172b4d;
 
---add-list-border-color:rgb(176, 174, 177);
---add-list-background-color:#f5f2f2;
---add-list-background-color-hover:#ededed;
+--add-list-text-color:rgb(176, 174, 177);
+--add-list-background-color:#fffffe42;
+--add-list-background-color-hover:#f1f2f4ba ;
 
---add-card-background-color:#dfd9e3;
---add-card-text:#091e42d6;
+--add-card-background-color:#ffffff3d;
+--add-card-background-color-hover:#091e4224;
+--add-card-text:#44546f;
 
 --input-card-btn-background-color:#ededed;
 
 --modal-background-color:rgb(0 0 0 / 44%);
---modal-content-background-color:#EEEEEE ;
+--modal-content-background-color:#f1f2f4  ;
 --card-modal-title-color:#58585B ;
 --card-modal-title-border-bottom:#091e42;
---main-text-modal-background-color:#b8b5b882;
+--main-text-modal-background-color:#b8b5b824;
 --btn-save:#d6d8db;
 --btn-save-hover:#bcc2cc;
 }

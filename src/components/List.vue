@@ -37,11 +37,11 @@
             class="add-card"
             @click="addCard"
         >
-            <div class="addcard-text">
+            <div class="add-card-text">
                 +
             </div>
             <div 
-                class="addcard-text"
+                class="add-card-text"
             >
                 Add Card
             </div>
@@ -76,8 +76,8 @@ export default {
             newListTitle: this.list.title,
             localCards: this.list.cards,
             draggableOptions: {
-                group: 'lists', 
-                animation: 550, 
+                group: 'cards', 
+                animation: 250, 
             },
             drCard:null,
             isLoading:false,
@@ -101,7 +101,7 @@ export default {
                 title: event.draggedContext.element.title,
                 cardText: event.draggedContext.element.cardText,
                 position: futurePosition ,
-                imageURL: event.draggedContext.element.imageURL,
+                s3Key: event.draggedContext.element.s3Key,
             };
             this.drCard = movedCard;
         },
@@ -140,5 +140,78 @@ export default {
 };
 
 </script>
-<style src="../assets/trello.css">
+<style scoped>
+
+.title-block {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--title-block-border-bottom);
+}
+
+.list {
+  margin-top: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 6px;
+ /* box-shadow: var(#ccc,0 1px 1px #091e4240,0 0 1px #091e424f);*/
+  border-radius: 5px;
+  min-width: 250px;
+  height: min-content;
+  box-sizing: border-box;
+  background: var(--list-background);
+  max-height: 95%;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-list-title{
+  background: #0000;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 600;
+    color: var(--list-title-color);
+    cursor: pointer;
+    position: relative;
+    display: block;
+    height: 18px;
+    border-bottom-left-radius: 1px;
+    border-bottom-right-radius: 1px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    border-style: none;
+    font-size: 16px;
+}
+
+.card-box {
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow-y: auto;
+}
+::-webkit-scrollbar {
+  background-color: var(--scrollbar-background-color);
+  border-radius: 20px;
+  border: 5px solid var(--scrollbar-border);
+  width: 10px;
+  -webkit-transform: translateZ(0);
+}
+
+.add-card {
+  margin-top: 4px;
+  background-color: var(--add-card-background-color);
+  border-radius: 3px;
+  position: relative;
+  display: flex;
+  cursor: pointer;
+  flex: 1 0 auto;
+  transition: transform 0.2s ease;
+}
+.add-card:hover {
+ background-color:  var(--add-card-background-color-hover);
+}
+
+.add-card-text {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  margin-left: 20px;
+  color: var(--add-card-text);
+}
+
 </style>

@@ -2,19 +2,27 @@
     <div
         class="board"
     >
-        <List
-            v-for="list in lists"
-            :key="list.cardId"
-            :list="list"
-            :list-key="list.listId"
-            :mobile="false"
-            @add-card="addCardToListFromDeskBoard"
-            @update-list-title="updateListTitleDeskBoard"  
-            @delete-card="deleteCardDesk"  
-            @delete-list="deleteListDesk"
-            @open-modal-card="openModalCardDesk"
-            @drag-card="dragCard"
-        />    
+        <draggable 
+            v-model="localLists"
+            class="draggable-board" 
+            :move="dragAndDropList" 
+            :options="draggableOptions"
+            @end="dropEndList"
+        >
+            <List
+                v-for="list in localLists"
+                :key="list.cardId"
+                :list="list"
+                :list-key="list.listId"
+                :mobile="false"
+                @add-card="addCardToListFromDeskBoard"
+                @update-list-title="updateListTitleDeskBoard"  
+                @delete-card="deleteCardDesk"  
+                @delete-list="deleteListDesk"
+                @open-modal-card="openModalCardDesk"
+                @drag-card="dragCard"
+            /> 
+        </draggable>   
         <div
             class="add-list"
             @click="addNewList"
@@ -26,12 +34,14 @@
 
 <script>
 import List from './List.vue';
+import draggable from 'vuedraggable';
 
 
 export default {
     name: 'DeskBoard',
     components: {
         List,
+        draggable,
     },
     inject:['addNewList'],
     props:{
@@ -41,7 +51,37 @@ export default {
             default: () => ([]),
         },
     },
+    data(){
+        return{
+            localLists:this.lists,
+            draggableOptions: {
+                group: 'lists', 
+                animation: 150, 
+            },
+            drList:null,
+        };
+    },
+    watch: {
+        'lists': function(newLists) {
+            this.localLists = newLists;
+        },
+    },   
     methods:{
+        dragAndDropList(event){        
+            const futurePosition =event.draggedContext.futureIndex+1 ;
+            const movedList = {
+                listId: event.draggedContext.element.listId,
+                title: event.draggedContext.element.title,
+                position: futurePosition ,
+            };
+            this.drList = movedList;
+        },
+        dropEndList(){
+            const movedList = this.drList;
+            this.drList = null;
+            this.$emit('drag-list',movedList);
+        },
+
         addCardToListFromDeskBoard(listId,titleCard){
             this.$emit('add-card', listId, titleCard);
         },
@@ -65,4 +105,17 @@ export default {
 };
 
 </script>
-<style src="../assets/trello.css"></style>
+<style scoped>
+.board {
+  height: 87%;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  background-color: var(--board-background);
+  max-width: 100%;
+}
+.draggable-board{
+    display: flex;
+}
+
+</style>

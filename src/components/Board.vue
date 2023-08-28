@@ -2,7 +2,7 @@
 <template>
     <div class="main">
         <div class="headline">
-            <h1> Igorello</h1>
+            Igorello
         </div>
         
         <SwiperBoard 
@@ -25,7 +25,8 @@
             @delete-card="deleteCard"
             @delete-list="deleteList"
             @open-modal-card="openModalCard"  
-            @drag-card="dragCard"           
+            @drag-card="dragCard"    
+            @drag-list="dragList"       
         />
         
         <CardModal
@@ -40,7 +41,7 @@
             :loading="isLoading"
         />
         <div class="bottom-bar">
-            <p> Produced by Ihor Bilash </p>
+            Produced by Ihor Bilash
         </div>
     </div>
 </template>
@@ -88,7 +89,7 @@ export default {
         ...mapActions([
             'getListsApi','createListApi','updateListTitleApi','deleteListApi',
             'createCardApi','updateCardApi','deleteCardApi','dragAndDropCardApi',
-            'saveFileByCardApi',
+            'saveFileByCardApi', 'dragAndDropListApi',
         ]),
         handleResize() {
             if (window.innerWidth < 767) {
@@ -112,7 +113,7 @@ export default {
                 title:cardTitle,
                 cardText:'',
                 position:newPosition,
-                imageURL:'',
+                s3Key:'',
             };
             await this.createCardApi(card);
             this.isLoading = false;
@@ -170,9 +171,14 @@ export default {
             await this.dragAndDropCardApi(movedCard);
             this.isLoading = false;
         },
-        async saveFileByCard(card,formData){
+        async dragList(movedList){
             this.isLoading = true; 
-            await this.saveFileByCardApi({card,formData});
+            await this.dragAndDropListApi(movedList);
+            this.isLoading = false;
+        },
+        async saveFileByCard(card,file){
+            this.isLoading = true; 
+            await this.saveFileByCardApi({card,file});
             this.isLoading = false;
         },
 
@@ -180,4 +186,30 @@ export default {
 };
 
 </script>
-<style src="../assets/trello.css"></style>
+
+<style scoped>
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5%;
+  color:var(--bottom-bar-color);
+  background-color: var(--bottom-bar-background);
+  text-align: center;
+  padding: 5px;
+
+}
+.headline {
+  height: 60px;
+  background-color: var(--header-background-color);
+  text-align: center;
+  color: var(--header-color);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  border-style: none;
+  font-size: 35px;
+  padding: 5px;
+}
+
+</style>
+
