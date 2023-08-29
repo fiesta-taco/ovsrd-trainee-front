@@ -41,7 +41,7 @@
             :loading="isLoading"
         />
         <div class="bottom-bar">
-            Produced by Ihor Bilash
+            Produced by Igor Bilash
         </div>
     </div>
 </template>

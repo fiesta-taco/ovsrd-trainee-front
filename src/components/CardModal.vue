@@ -119,9 +119,9 @@ export default {
         },
         
         updateCard() {
-            const title = this.$refs.cardTitle.textContent;
-            const text = this.$refs.cardText.textContent;
-            if (title.trim() !== '' /*&& text.trim() !== ''*/) {
+            const title = this.$refs.cardTitle.innerText;
+            const text = this.$refs.cardText.innerText;
+            if (title.trim() !== '' ) {
                 const newCard = {
                     cardId: this.card.cardId,
                     title: title,
@@ -379,7 +379,6 @@ export default {
     overflow-wrap: break-word;
     font-size: 14px;
     line-height: 1.5;
-
 }
 
 
