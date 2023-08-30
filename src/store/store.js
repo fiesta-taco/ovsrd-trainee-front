@@ -164,6 +164,20 @@ let store = new Vuex.Store({
             }
         },
 
+        async openFileApi(key) {
+            try {
+                const response = await axios.post(`${IMAGE_BACKEND_URL}/image/get`,{ fileKey:key});
+                const url = response.data.url;
+                if (url !== undefined) {
+                    window.open(url, '_blank');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('oops..something went wrong');
+            }
+        },
+           
+
     },
 
 });
