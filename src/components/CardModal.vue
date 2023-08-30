@@ -33,12 +33,20 @@
                         v-if="isOpenLoadFile" 
                         style="display: flex;"
                     >
-                        <input 
-                            ref="imageInput"
-                            class="add-file" 
-                            type="file" 
-                            @change="uploadFile"
-                        >  
+                        <image-uploader
+                            class="add-file"
+                            :preview="false"  
+                            :max-widht="300"
+                            :max-height="300"
+                            capture="environment"
+                            :debug="0"
+                            :auto-rotate="true"
+                            do-not-resize="['gif', 'svg']"
+                            output-format="jpeg"
+                            :quality="0.7"
+                            accept="image/*"
+                            @input="uploadFile"
+                        />  
                     </div>
                     <div 
                         v-if="isLoaded"
@@ -60,7 +68,7 @@
                         <div 
                             v-if="showOpenImage" 
                             class="open-image-btn" 
-                            @click="openImageByS3Key"
+                            @click="openFile"
                         >
                             Open File
                         </div>  
@@ -87,10 +95,13 @@
 </template>
   
 <script>
-import s3,{ getObjectParam } from '@/config/aws.config';
+
+import ImageUploader from 'vue-image-upload-resize';
 
 export default {
-
+    components: {
+        ImageUploader,
+    },
     props: {
         card: {
             type: Object,
@@ -132,14 +143,9 @@ export default {
                 this.$emit('update-card',newCard);
             }
         },
-        async openImageByS3Key(){
-            try{
-                getObjectParam.Key = this.card.s3Key;
-                const url = await s3.getSignedUrlPromise('getObject',getObjectParam);
-                window.open(url, '_blank');
-            }catch(error){
-                console.error(error);
-            }
+        async openFile(){
+            const key = this.card.s3Key;
+            this.$emit('open-file',key);          
             
         },
         resetModal(){
@@ -163,14 +169,15 @@ export default {
                 this.showOpenImage = false;
             }
         },
-        uploadFile(){
-            this.file = this.$refs.imageInput.files[0];
+        uploadFile(output){
+            this.file = output;
             this.isLoaded = true;
 
         },
         saveFileByCard(){
             this.$emit('save-file-by-card',this.card, this.file);
             this.closeModal();
+            this.file='';
             this.isOpenLoadFile = false;
             this.isLoaded = false;
             this.isOpenLoadFile=false;
@@ -374,6 +381,8 @@ export default {
 .input-in-module {
     width: 100%;
     min-height: 120px;
+    max-height: 300px;
+    overflow-y: auto;
     border-radius: 5px;
     white-space: pre-wrap;
     overflow-wrap: break-word;

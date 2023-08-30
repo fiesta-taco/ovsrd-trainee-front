@@ -36,6 +36,7 @@
             @close-modal="closeModal"
             @update-card="updateCard"
             @save-file-by-card="saveFileByCard"
+            @open-file="openFile"
         />
         <Spinner 
             :loading="isLoading"
@@ -89,7 +90,7 @@ export default {
         ...mapActions([
             'getListsApi','createListApi','updateListTitleApi','deleteListApi',
             'createCardApi','updateCardApi','deleteCardApi','dragAndDropCardApi',
-            'saveFileByCardApi', 'dragAndDropListApi',
+            'saveFileByCardApi', 'dragAndDropListApi','openFileApi',
         ]),
         handleResize() {
             if (window.innerWidth < 767) {
@@ -179,6 +180,11 @@ export default {
         async saveFileByCard(card,file){
             this.isLoading = true; 
             await this.saveFileByCardApi({card,file});
+            this.isLoading = false;
+        },
+        async openFile(key){
+            this.isLoading = true; 
+            await this.openFileApi(key);
             this.isLoading = false;
         },
 
