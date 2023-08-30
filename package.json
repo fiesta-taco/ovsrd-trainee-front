@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": " vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "cross-env AWS_SDK_LOAD_CONFIG=1 vue-cli-service build",
     "build-main": "cross-env NODE_ENV=main vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test": "jest --watch",
