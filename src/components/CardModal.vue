@@ -42,7 +42,7 @@
                             :debug="0"
                             :auto-rotate="true"
                             do-not-resize="['gif', 'svg']"
-                            output-format="jpeg"
+                            output-format="verbose"
                             :quality="0.7"
                             accept="image/*"
                             @input="uploadFile"
@@ -70,7 +70,7 @@
                             class="open-image-btn" 
                             @click="openFile"
                         >
-                            Open File
+                            Download File
                         </div>  
                     </div>
                     
@@ -115,7 +115,7 @@ export default {
             modalText: this.card.cardText,
             isOpenLoadFile:false,
             isLoaded:false,
-            file:'',
+            file:{},
             isURL:this.card.s3Key===''?false:true,
             showOpenImage:false,
         };
@@ -169,8 +169,11 @@ export default {
                 this.showOpenImage = false;
             }
         },
-        uploadFile(output){
-            this.file = output;
+        async uploadFile(output){
+            const fileName = output.info.name.split('.')[0];
+            const keyName = `${this.card.cardId}_${fileName}.jpeg`;
+            const newFile = await this.createNewImage(output.dataUrl,fileName);
+            this.file = {keyName,newFile};
             this.isLoaded = true;
 
         },
@@ -181,6 +184,25 @@ export default {
             this.isOpenLoadFile = false;
             this.isLoaded = false;
             this.isOpenLoadFile=false;
+        },
+        async createNewImage(dataUrl,fileName){       
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.src = dataUrl;
+            const newImage = await new Promise((resolve)=>{
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    canvas.toBlob(function (blob) {
+                        const file = new File([blob], `${fileName}`, { type: 'image/jpeg' });
+                        resolve(file);
+                    }, 'image/jpeg');
+                };
+            });
+            return newImage;
         },
     },
 };
@@ -342,6 +364,9 @@ export default {
     border-radius: 5px;
     margin-top:18px ;
     margin-bottom: 6px;
+}
+.save-file-btn:hover {
+    background-color: var(--btn-save-hover);
 }
 
 .load-file-btn:hover {
