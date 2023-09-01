@@ -115,7 +115,7 @@ export default {
             modalText: this.card.cardText,
             isOpenLoadFile:false,
             isLoaded:false,
-            file:{},
+            file:'',
             isURL:this.card.s3Key===''?false:true,
             showOpenImage:false,
         };
