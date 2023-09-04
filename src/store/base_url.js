@@ -8,7 +8,7 @@ if(value === 'development'){
 }else if(value === 'main'){
     BASE_URL = 'https://ypilc8th91.execute-api.eu-central-1.amazonaws.com/main';
 }else{
-    BASE_URL = 'https://qau5hxxl75.execute-api.eu-central-1.amazonaws.com/dev';
+    BASE_URL = 'https://upieze9en7.execute-api.eu-central-1.amazonaws.com/dev';
 }
 
 
