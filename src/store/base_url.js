@@ -6,9 +6,9 @@ export const IMAGE_BACKEND_URL ='https://bilash-docker-api-dev.kozub.dev';// 'ht
 if(value === 'development'){
     BASE_URL = 'http://localhost:3000/dev';
 }else if(value === 'main'){
-    BASE_URL = 'https://qau5hxxl75.execute-api.eu-central-1.amazonaws.com/main';
+    BASE_URL = 'https://ypilc8th91.execute-api.eu-central-1.amazonaws.com/main';
 }else{
-    BASE_URL = 'https://qau5hxxl75.execute-api.eu-central-1.amazonaws.com/dev';
+    BASE_URL = 'https://upieze9en7.execute-api.eu-central-1.amazonaws.com/dev';
 }
 
 
