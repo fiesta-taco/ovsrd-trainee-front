@@ -6,9 +6,9 @@ export const IMAGE_BACKEND_URL ='http://docker-Servi-fH6129ePRXND-783403714.eu-c
 if(value === 'development'){
     BASE_URL = 'http://localhost:3000/dev';
 }else if(value === 'main'){
-    BASE_URL = 'https://ypilc8th91.execute-api.eu-central-1.amazonaws.com/main';
+    BASE_URL = 'https://5mhmqfwuvc.execute-api.new region.amazonaws.com/main';
 }else{
-    BASE_URL = 'https://vu77hwfuh6.execute-api.eu-central-1.amazonaws.com/dev';
+    BASE_URL = 'https://5mhmqfwuvc.execute-api.new region.amazonaws.com/dev';
 }
 
 
