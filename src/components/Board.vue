@@ -42,7 +42,7 @@
             :loading="isLoading"
         />
         <div class="bottom-bar">
-            Produced by Igor Bilash
+            Produced by Alex Yakov
         </div>
     </div>
 </template>
