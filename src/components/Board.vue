@@ -2,7 +2,7 @@
 <template>
     <div class="main">
         <div class="headline">
-            Igorello
+            Chanazes
         </div>
         
         <SwiperBoard 
@@ -42,7 +42,7 @@
             :loading="isLoading"
         />
         <div class="bottom-bar">
-            Produced by Alex Yakov
+            Produced by Alex Yakov Sayndtres
         </div>
     </div>
 </template>
