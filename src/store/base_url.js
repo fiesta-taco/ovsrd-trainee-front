@@ -2,8 +2,7 @@
 const value = process.env.NODE_ENV;
 let BASE_URL = '';
 
-export const IMAGE_BACKEND_URL ='https://api-main.docker.devoops.click';// 'https://bilash-docker-api-dev.kozub.dev'; //'http://localhost:3003'
-
+export const IMAGE_BACKEND_URL ='https://api.main.docker.devoops.click';
     
 if(value === 'development'){
     BASE_URL = 'http://localhost:3000/dev';
