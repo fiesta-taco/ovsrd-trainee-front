@@ -42,7 +42,7 @@
             :loading="isLoading"
         />
         <div class="bottom-bar">
-            Produced by Alex Yakov 
+            Produced by Olekasndr Yakovenko 
         </div>
     </div>
 </template>
