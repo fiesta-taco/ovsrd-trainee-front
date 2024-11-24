@@ -2,7 +2,7 @@
 const value = process.env.NODE_ENV;
 let BASE_URL = '';
 
-export const IMAGE_BACKEND_URL ='https://api.main.docker.devoops.click';
+export const IMAGE_BACKEND_URL ='https://api-main.docker.devoops.click';
     
 if(value === 'development'){
     BASE_URL = 'http://localhost:3000/dev';
